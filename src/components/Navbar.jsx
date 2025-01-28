@@ -8,12 +8,14 @@ import {
   FaCartShopping,
 } from "react-icons/fa6";
 
+import avatar from "../assets/avatar.png";
+
 const Navbar = () => {
   const currentUser = true;
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const navigation = [
     { name: "Dashboard", href: "/" },
-    { name: "Orders", href: "/order" },
+    { name: "Orders", href: "/orders" },
     { name: "Cart Page", href: "/cart" },
     { name: "Checkout", href: "/checkout" },
   ];
@@ -28,7 +30,7 @@ const Navbar = () => {
           </Link>
 
           {/* search bar */}
-          <div className="flex items-start gap-2 rounded-sm bg-[#eaeaea] px-6 py-1.5 pl-1 shadow-sm">
+          <div className="mr-4 flex items-start gap-2 rounded-sm bg-[#eaeaea] px-6 py-1.5 pl-1 shadow-sm">
             <FaMagnifyingGlass className="size-6" />
             <input
               type="search"
@@ -44,13 +46,13 @@ const Navbar = () => {
             <>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="size-6"
+                className="size-8"
               >
                 <img
-                  src="https://i.ibb.co/7W8QYpW/avtar.png"
+                  src={avatar}
                   alt="avtar"
                   loading="lazy"
-                  className="${currentUser ? 'ring-2 ring-blue-400' : ''} size-6 rounded-full"
+                  className="${currentUser ? 'ring-2 ring-blue-400' : ''} size-8 rounded-full"
                 />
               </button>
               {/* dropdown */}
