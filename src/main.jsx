@@ -8,7 +8,11 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<App />}>
+          <Route path="home" element={<div>Home</div>} />
+          <Route path="about" element={<div>About</div>} />
+          <Route path="orders" element={<div>Orders</div>} />
+        </Route>
       </Routes>
     </BrowserRouter>
   </StrictMode>
