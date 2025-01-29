@@ -88,6 +88,7 @@ const News = () => {
                     {item.title}
                   </h2>
                 </Link>
+                <div className="bg-primary mb-2 h-1 w-10"></div>
                 <p className="font-secondary mb-5 text-sm text-gray-600">
                   {`${item.description.slice(0, 80)} ...`}
                 </p>

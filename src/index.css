@@ -7,8 +7,10 @@
   --color-blackBG: #f3f3f3;
   --color-favorite: #ff5841;
 
-  --font-primary: "Montserrat", serif;
+  --font-primary: "Montserrat", sans serif;
   --font-secondary: "Nunito", serif;
+
+  --default-font-family: "Montserrat";
 }
 
 .btn-primary {

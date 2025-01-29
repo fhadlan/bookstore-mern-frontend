@@ -11,7 +11,7 @@ import {
 import avatar from "../assets/avatar.png";
 
 const Navbar = () => {
-  const currentUser = true;
+  const currentUser = false;
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const navigation = [
     { name: "Dashboard", href: "/" },
