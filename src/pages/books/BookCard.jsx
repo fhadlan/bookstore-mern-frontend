@@ -19,11 +19,11 @@ const BookCard = ({ book }) => {
 
         <div>
           <Link to={`/books/${book._id}`}>
-            <h3 className="mb-3 text-xl font-semibold hover:text-blue-600">
+            <h3 className="font-primary mb-3 text-lg font-semibold hover:text-blue-600">
               {book.title}
             </h3>
           </Link>
-          <p className="mb-5 text-gray-600">
+          <p className="font-secondary mb-5 text-sm text-gray-600">
             {book.description.length > 80
               ? `${book.description.slice(0, 80)}...`
               : book.description}
@@ -34,7 +34,7 @@ const BookCard = ({ book }) => {
               ${book.oldPrice}
             </span>
           </p>
-          <button className="btn-primary flex items-center gap-1 space-x-1 px-6">
+          <button className="bg-primary hover:bg-secondary flex items-center gap-1 space-x-1 rounded-md px-3 py-1 shadow-sm transition-all duration-200 hover:cursor-pointer hover:text-white">
             <FaShoppingCart className="" />
             <span>Add to Cart</span>
           </button>
