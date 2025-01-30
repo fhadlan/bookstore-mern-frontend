@@ -9,10 +9,13 @@ import {
 } from "react-icons/fa6";
 
 import avatar from "../assets/avatar.png";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const currentUser = false;
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const cartItems = useSelector((state) => state.cart.cartItems);
+
   const navigation = [
     { name: "Dashboard", href: "/" },
     { name: "Orders", href: "/orders" },
@@ -86,7 +89,7 @@ const Navbar = () => {
             className="bg-primary flex gap-1 rounded-sm p-1.5 shadow-sm"
           >
             <FaCartShopping className="size-6" />
-            <span className="sm:px-3">1</span>
+            <span className="sm:px-3">{cartItems.length}</span>
           </Link>
         </div>
       </nav>
