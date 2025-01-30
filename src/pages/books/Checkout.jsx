@@ -14,7 +14,21 @@ const Checkout = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const newOrder = {
+      name: data.name,
+      email: data.email,
+      address: {
+        street: data.address,
+        city: data.city,
+        country: data.country,
+        state: data.state,
+        zipcode: data.zipcode,
+      },
+      phone: data.phone,
+      productId: cartItems.map((item) => item._id),
+      totalPrice: cartItems.reduce((acc, item) => acc + item.newPrice, 0),
+    };
+    console.log(newOrder);
   };
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-6">
