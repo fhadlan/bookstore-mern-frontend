@@ -9,6 +9,7 @@ import Home from "./pages/home/Home.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import { store } from "./redux/store.js";
+import CartPage from "./pages/books/CartPage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="orders" element={<div>Orders</div>} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="cart" element={<CartPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

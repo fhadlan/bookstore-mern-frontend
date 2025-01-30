@@ -36,7 +36,6 @@ const cartSlice = createSlice({
         (item) => item._id !== action.payload._id,
       );
       Swal.fire({
-        position: "top-end",
         icon: "success",
         title: "Item removed from cart",
         showConfirmButton: false,
@@ -45,6 +44,12 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.cartItems = [];
+      Swal.fire({
+        icon: "success",
+        title: "Cart cleared",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     },
   },
 });
