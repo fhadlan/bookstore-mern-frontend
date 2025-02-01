@@ -16,7 +16,7 @@ const BookCard = ({ book }) => {
     <div className="rounded-lg transition-shadow duration-300">
       <div className="flex flex-col gap-4 sm:h-72 sm:flex-row sm:items-center sm:justify-center">
         <div className="rounded-md shadow-sm sm:h-72 sm:flex-shrink-0">
-          <Link to={`/books/${book._id}`}>
+          <Link to={`/book/${book._id}`}>
             <img
               src={`${getImgUrl(book.coverImage)}`}
               alt=""
@@ -26,7 +26,7 @@ const BookCard = ({ book }) => {
         </div>
 
         <div>
-          <Link to={`/books/${book._id}`}>
+          <Link to={`/book/${book._id}`}>
             <h3 className="font-primary mb-3 text-lg font-semibold hover:text-blue-600">
               {book.title}
             </h3>

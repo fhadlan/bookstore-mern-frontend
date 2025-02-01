@@ -11,6 +11,7 @@ import Register from "./components/Register.jsx";
 import { store } from "./redux/store.js";
 import CartPage from "./pages/books/CartPage.jsx";
 import Checkout from "./pages/books/Checkout.jsx";
+import SingleBook from "./pages/books/SingleBook.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="register" element={<Register />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="/book/:id" element={<SingleBook />} />
         </Route>
       </Routes>
     </BrowserRouter>

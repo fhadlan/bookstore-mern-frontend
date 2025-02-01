@@ -4,6 +4,8 @@ import BookCard from "../books/BookCard";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { useFetchAllBooksQuery } from "../../redux/features/book/bookApi";
+
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
@@ -12,13 +14,7 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 
 const Recommended = () => {
-  const [books, setBooks] = React.useState([]);
-
-  React.useEffect(() => {
-    fetch("book.json")
-      .then((res) => res.json())
-      .then((data) => setBooks(data));
-  }, []);
+  const { data: books = [] } = useFetchAllBooksQuery();
 
   return (
     <div className="py-10">
