@@ -133,7 +133,7 @@ const CartPage = () => {
             or
             <button
               type="button"
-              className="ml-1 font-medium text-indigo-600 hover:text-indigo-500"
+              className="ml-1 font-medium text-indigo-600 hover:cursor-pointer hover:text-indigo-500 hover:underline"
             >
               Continue Shopping
               <span aria-hidden="true"> &rarr;</span>
