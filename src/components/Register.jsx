@@ -2,9 +2,12 @@ import React from "react";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa6";
+import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 const Register = () => {
-  const [message, setMessage] = React.useState("message");
+  const [message, setMessage] = React.useState();
+  const { registerUser } = useAuth();
   const {
     register,
     handleSubmit,
@@ -12,11 +15,27 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    //console.log(data);
+    try {
+      await registerUser(data.email, data.password);
+      Swal.fire({
+        icon: "success",
+        title: "Registration successful",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      const errorMessage = String(error.message);
+      if (errorMessage.includes("auth/email-already-in-use")) {
+        setMessage("Email already in use");
+      } else if (errorMessage.includes("auth/weak-password")) {
+        setMessage("Password should be at least 6 characters");
+      } else {
+        setMessage("Something went wrong");
+      }
+    }
   };
-
-  const handleGoogleSignIn = () => {};
 
   return (
     <div className="h-[calc( 100vh - 64px)] flex items-center">
@@ -59,7 +78,7 @@ const Register = () => {
           </div>
           {message && (
             <div className="mb-4">
-              <p className="mb-3 text-red-600">test massage{message}</p>
+              <p className="mb-3 text-red-600">{message}</p>
             </div>
           )}
           <div>
@@ -73,7 +92,7 @@ const Register = () => {
           </Link>
         </p>
         {/* google sign-in method*/}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <button
             onClick={handleGoogleSignIn}
             className="font-primary flex w-full items-center justify-center gap-2 rounded bg-blue-600 px-4 py-2 font-semibold text-white transition-colors hover:cursor-pointer hover:bg-blue-800"
@@ -81,7 +100,7 @@ const Register = () => {
             <FaGoogle />
             Sign in With Google
           </button>
-        </div>
+        </div> */}
         <p className="text-center text-sm text-gray-600">
           &copy; 2022 All rights reserved.
         </p>

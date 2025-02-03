@@ -1,10 +1,14 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa6";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const [message, setMessage] = React.useState("message");
+  const navigate = useNavigate();
+  const [message, setMessage] = React.useState();
+  const { loginUser, signInWithGoogle } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -12,11 +16,25 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      await loginUser(data.email, data.password);
+      navigate("/");
+    } catch (error) {
+      String(error.message).includes("auth/invalid-credential")
+        ? setMessage("Invalid email or password")
+        : setMessage("Something went wrong");
+    }
   };
 
-  const handleGoogleSignIn = () => {};
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      navigate("/");
+    } catch (error) {
+      setMessage("Something went wrong");
+    }
+  };
 
   return (
     <div className="h-[calc( 100vh - 64px)] flex items-center">
@@ -59,7 +77,7 @@ const Login = () => {
           </div>
           {message && (
             <div className="mb-4">
-              <p className="mb-3 text-red-600">test massage{message}</p>
+              <p className="mb-3 text-red-600">{message}</p>
             </div>
           )}
           <div>

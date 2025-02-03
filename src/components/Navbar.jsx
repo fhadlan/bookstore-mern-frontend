@@ -10,9 +10,10 @@ import {
 
 import avatar from "../assets/avatar.png";
 import { useSelector } from "react-redux";
+import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
-  const currentUser = false;
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const cartItems = useSelector((state) => state.cart.cartItems);
 
@@ -22,7 +23,27 @@ const Navbar = () => {
     { name: "Cart Page", href: "/cart" },
     { name: "Checkout", href: "/checkout" },
   ];
-  console.log(isDropdownOpen);
+
+  const { currentUser, logoutUser } = useAuth();
+
+  const handleLogout = () => {
+    Swal.fire({
+      icon: "question",
+      title: "Logout",
+      text: "Are you sure you want to logout?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logoutUser();
+        setIsDropdownOpen(false);
+      }
+    });
+  };
+
+  //console.log(isDropdownOpen);
+
   return (
     <header className="mx-auto max-w-screen-xl px-4 py-6">
       <nav className="flex items-center justify-between">
@@ -62,16 +83,26 @@ const Navbar = () => {
               {isDropdownOpen && (
                 <div className="absolute right-0 z-40 mt-50 w-48 rounded-md bg-white shadow-md">
                   <ul>
-                    {navigation.map((item) => (
+                    {navigation.map((item, index) => (
                       <li key={item.name}>
                         <Link
                           to={item.href}
-                          className="block px-4 py-2 hover:bg-gray-100"
+                          className={`block px-4 py-2 hover:bg-gray-100 ${
+                            index === 0 ? "rounded-t-md" : ""
+                          }`}
                         >
                           {item.name}
                         </Link>
                       </li>
                     ))}
+                    <li>
+                      <button
+                        onClick={handleLogout}
+                        className="flex w-full items-center justify-start px-4 py-2 hover:cursor-pointer hover:rounded-b-md hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </li>
                   </ul>
                 </div>
               )}
