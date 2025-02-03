@@ -1,13 +1,13 @@
 import React from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa6";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
+  const { loginUser, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const [message, setMessage] = React.useState();
-  const { loginUser, signInWithGoogle } = useAuth();
 
   const {
     register,
