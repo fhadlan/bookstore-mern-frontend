@@ -1,11 +1,20 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useCreateOrderMutation } from "../../redux/features/order/orderApi";
+import Swal from "sweetalert2";
+import { auth } from "../../firebase/firebase.config";
+import { clearCart } from "../../redux/features/cart/cartSlice";
 
 const Checkout = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [isChecked, setIsChecked] = React.useState(false);
+  const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const { email, displayName, uid } = auth.currentUser;
+
   const {
     register,
     handleSubmit,
@@ -13,8 +22,9 @@ const Checkout = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const newOrder = {
+      userId: uid,
       name: data.name,
       email: data.email,
       address: {
@@ -25,11 +35,44 @@ const Checkout = () => {
         zipcode: data.zipcode,
       },
       phone: data.phone,
-      productId: cartItems.map((item) => item._id),
+      productsId: cartItems.map((item) => item._id),
       totalPrice: cartItems.reduce((acc, item) => acc + item.newPrice, 0),
     };
-    console.log(newOrder);
+
+    try {
+      Swal.fire({
+        title: "Confirm Order",
+        icon: "question",
+        text: "Are you sure you want to place this order?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: `No`,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await createOrder(newOrder).then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "Order placed successfully",
+              showConfirmButton: false,
+              timer: 1500,
+            }).finally(() => {
+              dispatch(clearCart());
+              navigate("/orders");
+            });
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-6">
       <div className="container mx-auto max-w-screen-lg">
@@ -63,6 +106,7 @@ const Checkout = () => {
                       type="text"
                       name="name"
                       id="name"
+                      defaultValue={displayName}
                       className="mt-1 h-10 w-full rounded border bg-gray-50 px-4"
                       {...register("name", { required: true })}
                     />
@@ -75,7 +119,7 @@ const Checkout = () => {
                       name="email"
                       id="email"
                       className="mt-1 h-10 w-full rounded border bg-gray-50 px-4"
-                      defaultValue=""
+                      defaultValue={email}
                       placeholder="email@domain.com"
                       {...register("email", { required: true })}
                     />

@@ -31,6 +31,7 @@ createRoot(document.getElementById("root")).render(
           </Route>
           <Route element={<PrivateRoute />}>
             <Route path="checkout" element={<Checkout />} />
+            <Route path="orders" element={<div>Orders</div>} />
           </Route>
         </Route>
       </Routes>

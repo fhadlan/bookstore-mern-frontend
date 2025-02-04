@@ -44,12 +44,6 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.cartItems = [];
-      Swal.fire({
-        icon: "success",
-        title: "Cart cleared",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     },
   },
 });

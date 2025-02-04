@@ -34,6 +34,12 @@ const CartPage = () => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         dispatch(clearCart());
+        Swal.fire({
+          icon: "success",
+          title: "Cart cleared",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     });
   };
