@@ -1,8 +1,39 @@
-# React + Vite
+## to do
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+-add review
+-add user change/forgot password
+-touch up orders page
 
-Currently, two official plugins are available:
+# Bookstore App
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is a simple Bookstore App built with MERN Stack.
+
+## Features
+
+- User can register and login
+- User can add books to cart
+- User can checkout and make payment
+- User can view orders
+- Admin can add, update and delete books
+
+## Tech Stack
+
+- Frontend: React, Redux, Tailwind CSS
+- Backend: Node.js, Express.js, MongoDB
+- Authentication: Firebase Authentication
+
+## How to run
+
+1. Clone the repository
+2. Run `npm install` in the root directory
+3. Run `npm run dev` to start the development server
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
+
+## Environment Variables
+
+- `VITE_API_KEY`: Firebase API key
+- `VITE_AUTH_DOMAIN`: Firebase Auth domain
+- `VITE_PROJECT_ID`: Firebase Project ID
+- `VITE_STORAGE_BUCKET`: Firebase Storage bucket
+- `VITE_MESSAGING_SENDER_ID`: Firebase Messaging sender ID
+- `VITE_APP_ID`: Firebase App ID
