@@ -14,6 +14,7 @@ import Checkout from "./pages/books/Checkout.jsx";
 import SingleBook from "./pages/books/SingleBook.jsx";
 import PrivateRoute from "./routers/PrivateRoute.jsx";
 import LoginRegister from "./routers/LoginRegister.jsx";
+import Orders from "./pages/books/Orders.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -22,7 +23,6 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="about" element={<div>About</div>} />
-          <Route path="orders" element={<div>Orders</div>} />
           <Route path="cart" element={<CartPage />} />
           <Route path="/book/:id" element={<SingleBook />} />
           <Route element={<LoginRegister />}>
@@ -31,7 +31,7 @@ createRoot(document.getElementById("root")).render(
           </Route>
           <Route element={<PrivateRoute />}>
             <Route path="checkout" element={<Checkout />} />
-            <Route path="orders" element={<div>Orders</div>} />
+            <Route path="orders" element={<Orders />} />
           </Route>
         </Route>
       </Routes>
