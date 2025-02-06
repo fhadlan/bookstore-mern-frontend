@@ -16,3 +16,11 @@
 .btn-primary {
   @apply bg-primary font-secondary hover:bg-secondary cursor-pointer rounded-md px-12 py-2 text-base font-bold transition-all duration-200 hover:text-white;
 }
+
+button:hover {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

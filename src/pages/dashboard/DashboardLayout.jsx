@@ -5,10 +5,27 @@ import { MdClose } from "react-icons/md";
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [bookDropdownOpen, setBookDropdownOpen] = React.useState(false);
+  const [pageTitle, setPageTitle] = React.useState("Dashboard");
   const location = useLocation();
 
   React.useEffect(() => {
     setSidebarOpen(false);
+    switch (location.pathname) {
+      case "/dashboard":
+        setPageTitle("Dashboard");
+        break;
+      case "/dashboard/manage-book":
+        setPageTitle("Manage Book");
+        break;
+      case "/dashboard/add-book":
+        setPageTitle("Add Book");
+        break;
+      case "/dashboard/manage-user":
+        setPageTitle("Manage User");
+        break;
+      default:
+        setPageTitle("Dashboard");
+    }
   }, [location]);
 
   return (
@@ -109,7 +126,7 @@ const DashboardLayout = () => {
             >
               ☰
             </button>
-            <h1 className="text-xl font-bold">Dashboard</h1>
+            <h1 className="text-xl font-bold">{pageTitle}</h1>
             <div className="space-x-4">
               <a href="#" className="hover:text-gray-400">
                 Profile

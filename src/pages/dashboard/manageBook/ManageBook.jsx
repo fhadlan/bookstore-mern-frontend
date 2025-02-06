@@ -1,13 +1,17 @@
 import React from "react";
 import {
   useDeleteBookMutation,
-  useFetchAllBooksQuery,
+  useFetchBookTableDataQuery,
 } from "../../../redux/features/book/bookApi";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import Swal from "sweetalert2";
+
 function ManageBook() {
-  const { data: books = [], isLoading } = useFetchAllBooksQuery();
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const { data: { books, totalPages } = [], isLoading } =
+    useFetchBookTableDataQuery(currentPage);
   const [deleteBook] = useDeleteBookMutation();
+
   const handleDelete = (id) => {
     try {
       Swal.fire({
@@ -36,16 +40,15 @@ function ManageBook() {
   };
 
   if (isLoading) {
-    console.log(isLoading);
     return (
       <div className="flex h-screen items-center justify-center">
         <div className="h-32 w-32 animate-spin rounded-full border-t-2 border-b-2 border-gray-900"></div>
       </div>
     );
   }
+
   return (
-    <div className="flex flex-col gap-4">
-      ManageBook
+    <div className="flex max-h-full flex-col gap-4">
       <table className="table-auto border-collapse border border-slate-300 shadow-2xl">
         <thead>
           <tr className="bg-slate-300">
@@ -57,6 +60,11 @@ function ManageBook() {
           </tr>
         </thead>
         <tbody>
+          {isLoading && (
+            <tr>
+              <td>Loading...</td>
+            </tr>
+          )}
           {books.map((book, index) => (
             <tr
               key={book._id}
@@ -83,6 +91,55 @@ function ManageBook() {
           ))}
         </tbody>
       </table>
+      <div className="mt-4 flex items-center justify-center gap-2">
+        <button
+          onClick={() => setCurrentPage(1)}
+          className="rounded-lg bg-gray-200 px-4 py-2"
+        >
+          First
+        </button>
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          className="rounded-lg bg-gray-200 px-4 py-2 disabled:opacity-50"
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <div className="flex gap-2">
+          {[
+            currentPage - 2,
+            currentPage - 1,
+            currentPage,
+            currentPage + 1,
+            currentPage + 2,
+          ]
+            .filter((page) => page > 0 && page <= totalPages)
+            .map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`${
+                  currentPage === page ? "bg-blue-500 text-white" : "bg-white"
+                } rounded-lg px-4 py-2 hover:bg-blue-400 hover:text-white`}
+              >
+                {page}
+              </button>
+            ))}
+        </div>
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
+          className="rounded-lg bg-gray-200 px-4 py-2 disabled:opacity-50"
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+        <button
+          onClick={() => setCurrentPage(totalPages)}
+          className="rounded-lg bg-gray-200 px-4 py-2"
+        >
+          Last
+        </button>
+      </div>
     </div>
   );
 }

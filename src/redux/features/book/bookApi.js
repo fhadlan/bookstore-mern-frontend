@@ -32,6 +32,10 @@ const bookApi = createApi({
       query: (id) => `/${id}`,
       providesTags: (result, error, id) => [{ type: "Book", id }],
     }),
+    fetchBookTableData: builder.query({
+      query: (page) => `/get-books-table/${page}`,
+      providesTags: ["Book"],
+    }),
     createBook: builder.mutation({
       query: (newBook) => ({
         url: "/create-book",
@@ -67,6 +71,7 @@ export const {
   useCreateBookMutation,
   useUpdateBookMutation,
   useDeleteBookMutation,
+  useFetchBookTableDataQuery,
 } = bookApi;
 
 export default bookApi;
