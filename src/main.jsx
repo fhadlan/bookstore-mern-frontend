@@ -18,6 +18,7 @@ import Orders from "./pages/books/Orders.jsx";
 import AdminRoute from "./routers/AdminRoute.jsx";
 import AdminLogin from "./components/AdminLogin.jsx";
 import DashboardLayout from "./pages/dashboard/DashboardLayout.jsx";
+import ManageBook from "./pages/dashboard/manageBook/ManageBook.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -41,7 +42,7 @@ createRoot(document.getElementById("root")).render(
           <Route element={<AdminRoute />}>
             <Route path="" element={<div>Dashboard</div>} />
             <Route path="add-book" element={<div>Add Book</div>} />
-            <Route path="manage-book" element={<div>Manage Book</div>} />
+            <Route path="manage-book" element={<ManageBook />} />
           </Route>
           <Route path="login" element={<AdminLogin />} />
         </Route>
