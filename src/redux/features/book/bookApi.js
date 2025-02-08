@@ -44,13 +44,10 @@ const bookApi = createApi({
       invalidatesTags: ["Book"],
     }),
     updateBook: builder.mutation({
-      query: ({ _id, ...rest }) => ({
-        url: `/update-book/${_id}`,
+      query: (formData) => ({
+        url: `/update-book/${formData.get("_id")}`,
         method: "PUT",
-        body: rest,
-        headers: {
-          contentType: "application/json",
-        },
+        body: formData,
       }),
       invalidatesTags: ["Book"],
     }),

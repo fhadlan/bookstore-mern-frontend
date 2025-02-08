@@ -115,7 +115,19 @@ function AddBook() {
             type="file"
             name="coverImage"
             className="mb-2 block w-full rounded-md border border-gray-400 bg-white px-4 py-2 text-gray-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-blue-200 focus:outline-none"
-            {...register("coverImage", { required: true })}
+            {...register("image", {
+              required: "Image is required",
+              validate: (fileList) => {
+                const file = fileList[0];
+                if (!file) return "Image is required";
+                if (!file.type.startsWith("image/"))
+                  return "Only image files are allowed";
+                if (file.size > 1024 * 1024)
+                  return "File must be less than 1MB"; // 1MB limit
+                return true;
+              },
+            })}
+            accept="image/*"
           />
           {errors.coverImage && (
             <p className="text-red-500">Cover Image is required</p>

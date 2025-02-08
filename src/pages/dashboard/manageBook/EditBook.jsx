@@ -1,14 +1,20 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
-import { useFetchSingleBookQuery } from "../../../redux/features/book/bookApi";
+import {
+  useFetchSingleBookQuery,
+  useUpdateBookMutation,
+} from "../../../redux/features/book/bookApi";
 import getBaseUrl from "../../../utils/getBaseUrl";
+import Swal from "sweetalert2";
 
 function EditBook() {
   const { id } = useParams();
   const { data: book = [], isLoading } = useFetchSingleBookQuery(id);
+  const [updateBook, { isLoading: isUpdating }] = useUpdateBookMutation();
   const [preview, setPreview] = React.useState(null);
   const [selectedFile, setSelectedFile] = React.useState(null);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -19,16 +25,15 @@ function EditBook() {
 
   React.useEffect(() => {
     if (book) {
+      setValue("_id", book._id);
       setValue("title", book.title);
       setValue("description", book.description);
-      setValue("coverImage", book.coverImage);
       setValue("oldPrice", book.oldPrice);
       setValue("newPrice", book.newPrice);
       setValue("category", book.category);
       setValue("trending", book.trending);
       setPreview(getBaseUrl() + "/" + book.coverImage);
     }
-    console.log(book.coverImage);
   }, [book]);
 
   if (isLoading) {
@@ -41,14 +46,28 @@ function EditBook() {
 
   const onSubmit = async (data) => {
     const formData = new FormData();
+    formData.append("_id", book._id);
     formData.append("title", data.title);
     formData.append("description", data.description);
-    formData.append("coverImage", data.coverImage[0]);
+    data.coverImage[0] && formData.append("coverImage", data.coverImage[0]);
     formData.append("oldPrice", data.oldPrice);
     formData.append("newPrice", data.newPrice);
     formData.append("category", data.category);
     formData.append("trending", data.trending);
-    console.log("formData", Object.fromEntries(formData));
+    console.log(formData.get("_id"));
+    try {
+      await updateBook(formData);
+      Swal.fire({
+        icon: "success",
+        title: "Book updated successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      }).finally(() => {
+        navigate("/dashboard/manage-book");
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleFileChange = (e) => {
@@ -147,11 +166,21 @@ function EditBook() {
                 type="file"
                 name="coverImage"
                 className="mt-8 mb-2 w-full rounded-md border border-gray-400 bg-white px-4 py-2 text-gray-700 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-blue-200 focus:outline-none"
-                {...register("coverImage", { required: true })}
+                {...register("coverImage", {
+                  validate: (fileList) => {
+                    if (fileList.length === 0) return true;
+                    if (!fileList[0].type.startsWith("image/"))
+                      return "Only image files are allowed";
+                    if (fileList[0].size > 1024 * 1024)
+                      return "File must be less than 1MB"; // 1MB limit
+                    return true;
+                  },
+                })}
+                accept="image/*"
                 onChange={handleFileChange}
               />
               {errors.coverImage && (
-                <p className="text-red-500">Cover Image is required</p>
+                <p className="text-red-500">{errors.coverImage.message}</p>
               )}
             </label>
           </div>
@@ -165,7 +194,7 @@ function EditBook() {
           type="submit"
           className="flex w-full items-center justify-center rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-100 focus:outline-none"
         >
-          {isLoading ? (
+          {isUpdating ? (
             <div className="flex h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
           ) : (
             "Update Book"
