@@ -5,8 +5,10 @@ import {
 } from "../../../redux/features/book/bookApi";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 function ManageBook() {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = React.useState(1);
   const { data: { books, totalPages } = [], isLoading } =
     useFetchBookTableDataQuery(currentPage);
@@ -77,7 +79,10 @@ function ManageBook() {
               <td className="px-4 py-2">{book.category}</td>
               <td className="px-4 py-2">{book.newPrice}</td>
               <td className="flex items-center justify-center gap-1 px-4 py-2">
-                <button className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:cursor-pointer hover:bg-blue-700">
+                <button
+                  onClick={() => navigate(`/dashboard/edit-book/${book._id}`)}
+                  className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:cursor-pointer hover:bg-blue-700"
+                >
                   <FaPen />
                 </button>
                 <button

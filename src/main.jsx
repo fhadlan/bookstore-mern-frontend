@@ -20,34 +20,39 @@ import AdminLogin from "./components/AdminLogin.jsx";
 import DashboardLayout from "./pages/dashboard/DashboardLayout.jsx";
 import ManageBook from "./pages/dashboard/manageBook/ManageBook.jsx";
 import AddBook from "./pages/dashboard/manageBook/AddBook.jsx";
+import EditBook from "./pages/dashboard/manageBook/EditBook.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<div>About</div>} />
-          <Route path="cart" element={<CartPage />} />
-          <Route path="/book/:id" element={<SingleBook />} />
-          <Route element={<LoginRegister />}>
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
+  <StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<div>About</div>} />
+            <Route path="cart" element={<CartPage />} />
+            <Route path="/book/:id" element={<SingleBook />} />
+            <Route element={<LoginRegister />}>
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+            </Route>
+            <Route element={<PrivateRoute />}>
+              <Route path="checkout" element={<Checkout />} />
+              <Route path="orders" element={<Orders />} />
+            </Route>
           </Route>
-          <Route element={<PrivateRoute />}>
-            <Route path="checkout" element={<Checkout />} />
-            <Route path="orders" element={<Orders />} />
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route element={<AdminRoute />}>
+              <Route path="" element={<div>Dashboard</div>} />
+              <Route path="add-book" element={<AddBook />} />
+              <Route path="manage-book" element={<ManageBook />} />
+              <Route path="edit-book/:id" element={<EditBook />} />
+            </Route>
+            <Route path="login" element={<AdminLogin />} />
           </Route>
-        </Route>
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route element={<AdminRoute />}>
-            <Route path="" element={<div>Dashboard</div>} />
-            <Route path="add-book" element={<AddBook />} />
-            <Route path="manage-book" element={<ManageBook />} />
-          </Route>
-          <Route path="login" element={<AdminLogin />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </Provider>,
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+    ,
+  </StrictMode>,
 );

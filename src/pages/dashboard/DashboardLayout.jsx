@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Outlet, useLocation } from "react-router";
+import { Link, Outlet, useLocation, useMatch } from "react-router";
 import { MdClose } from "react-icons/md";
 
 const DashboardLayout = () => {
@@ -8,23 +8,29 @@ const DashboardLayout = () => {
   const [pageTitle, setPageTitle] = React.useState("Dashboard");
   const location = useLocation();
 
+  const isEditBook = useMatch("/dashboard/edit-book/:id");
+
   React.useEffect(() => {
     setSidebarOpen(false);
-    switch (location.pathname) {
-      case "/dashboard":
-        setPageTitle("Dashboard");
-        break;
-      case "/dashboard/manage-book":
-        setPageTitle("Manage Book");
-        break;
-      case "/dashboard/add-book":
-        setPageTitle("Add Book");
-        break;
-      case "/dashboard/manage-user":
-        setPageTitle("Manage User");
-        break;
-      default:
-        setPageTitle("Dashboard");
+    if (isEditBook) {
+      setPageTitle("Edit Book");
+    } else {
+      switch (location.pathname) {
+        case "/dashboard":
+          setPageTitle("Dashboard");
+          break;
+        case "/dashboard/manage-book":
+          setPageTitle("Manage Book");
+          break;
+        case "/dashboard/add-book":
+          setPageTitle("Add Book");
+          break;
+        case "/dashboard/manage-user":
+          setPageTitle("Manage User");
+          break;
+        default:
+          setPageTitle("Dashboard");
+      }
     }
   }, [location]);
 
