@@ -12,15 +12,22 @@ function AddBook() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
-    formData.append("image", data.coverImage[0]);
+    formData.append("coverImage", data.coverImage[0]);
     formData.append("oldPrice", data.oldPrice);
     formData.append("newPrice", data.newPrice);
     formData.append("category", data.category);
     formData.append("trending", data.trending);
+    console.log("formData", Object.fromEntries(formData));
+
+    try {
+      await createBook(formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

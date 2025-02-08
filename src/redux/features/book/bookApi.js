@@ -8,7 +8,6 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers) => {
     // Retrieve the token from local storage
     const token = localStorage.getItem("token");
-
     // If a token exists, set the authorization header with the Bearer token
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
