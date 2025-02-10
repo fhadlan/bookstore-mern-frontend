@@ -3,6 +3,10 @@
 -add review
 -add user change/forgot password
 -touch up orders page
+-pindah fungsi firebase ke backend
+-auto logout user(firebase)
+-backend admin ganti password/manage order
+-setting cloudinary
 
 # Bookstore App
 
