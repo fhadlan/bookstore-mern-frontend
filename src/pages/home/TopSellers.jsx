@@ -23,7 +23,6 @@ const TopSellers = () => {
         "Choose a genre",
         ...new Set(books.map((book) => book.category)),
       ]);
-      console.log("this runs");
     }
   }, [books]);
 
