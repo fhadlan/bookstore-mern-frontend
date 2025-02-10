@@ -1,38 +1,33 @@
 import React from "react";
-import { Link, Outlet, useLocation, useMatch } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
 import { MdClose } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [bookDropdownOpen, setBookDropdownOpen] = React.useState(false);
   const [pageTitle, setPageTitle] = React.useState("Dashboard");
-  const location = useLocation();
+  const navigate = useNavigate();
 
-  const isEditBook = useMatch("/dashboard/edit-book/:id");
+  const changeTitle = (title) => {
+    setPageTitle(title);
+  };
 
-  React.useEffect(() => {
-    setSidebarOpen(false);
-    if (isEditBook) {
-      setPageTitle("Edit Book");
-    } else {
-      switch (location.pathname) {
-        case "/dashboard":
-          setPageTitle("Dashboard");
-          break;
-        case "/dashboard/manage-book":
-          setPageTitle("Manage Book");
-          break;
-        case "/dashboard/add-book":
-          setPageTitle("Add Book");
-          break;
-        case "/dashboard/manage-user":
-          setPageTitle("Manage User");
-          break;
-        default:
-          setPageTitle("Dashboard");
+  const handleLogout = () => {
+    Swal.fire({
+      icon: "question",
+      title: "Logout",
+      text: "Are you sure you want to logout?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("token");
+        navigate("/dashboard/login");
       }
-    }
-  }, [location]);
+    });
+  };
 
   return (
     <div className="flex">
@@ -115,9 +110,9 @@ const DashboardLayout = () => {
               </a>
             </li>
             <li>
-              <a href="#" className="block rounded px-4 py-2 hover:bg-gray-700">
+              <button className="block rounded px-4 py-2 hover:bg-gray-700">
                 Logout
-              </a>
+              </button>
             </li>
           </ul>
         </nav>
@@ -137,15 +132,15 @@ const DashboardLayout = () => {
               <a href="#" className="hover:text-gray-400">
                 Profile
               </a>
-              <a href="#" className="hover:text-gray-400">
+              <button onClick={handleLogout} className="hover:text-gray-400">
                 Logout
-              </a>
+              </button>
             </div>
           </div>
         </header>
 
         <main className="mt-16 flex-1 p-6">
-          <Outlet />
+          <Outlet context={{ changeTitle }} />
         </main>
       </div>
     </div>

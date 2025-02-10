@@ -15,7 +15,6 @@ function AdminLogin() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data.email, data.password);
     try {
       const response = await axios.post(
         `${getBaseUrl()}/api/user/login`,

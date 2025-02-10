@@ -41,12 +41,14 @@ createRoot(document.getElementById("root")).render(
               <Route path="orders" element={<Orders />} />
             </Route>
           </Route>
-          <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="/dashboard">
             <Route element={<AdminRoute />}>
-              <Route path="" element={<div>Dashboard</div>} />
-              <Route path="add-book" element={<AddBook />} />
-              <Route path="manage-book" element={<ManageBook />} />
-              <Route path="edit-book/:id" element={<EditBook />} />
+              <Route element={<DashboardLayout />}>
+                <Route path="" element={<div>Dashboard</div>} />
+                <Route path="add-book" element={<AddBook />} />
+                <Route path="manage-book" element={<ManageBook />} />
+                <Route path="edit-book/:id" element={<EditBook />} />
+              </Route>
             </Route>
             <Route path="login" element={<AdminLogin />} />
           </Route>
