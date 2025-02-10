@@ -1,5 +1,5 @@
 function getImgUrl(name) {
-  return new URL(`../assets/books/${name}`, import.meta.url);
+  return `http://localhost:3128/${name}`;
 }
 
 function getImgUrlNews(name) {

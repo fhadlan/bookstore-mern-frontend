@@ -11,24 +11,26 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { useFetchAllBooksQuery } from "../../redux/features/book/bookApi";
 
-const categories = [
-  "Choose a genre",
-  "Business",
-  "Fiction",
-  "Horror",
-  "Adventure",
-];
 const TopSellers = () => {
   const [selectedCategory, setSelectedCategory] =
     React.useState("Choose a genre");
+  const [categories, setCategories] = React.useState([]);
+  const { data: books = [], isLoading } = useFetchAllBooksQuery();
 
-  const { data: books = [] } = useFetchAllBooksQuery();
+  React.useEffect(() => {
+    if (books) {
+      setCategories([
+        "Choose a genre",
+        ...new Set(books.map((book) => book.category)),
+      ]);
+      console.log("this runs");
+    }
+  }, [books]);
+
   const filteredBooks =
     selectedCategory === "Choose a genre"
       ? books
-      : books.filter(
-          (book) => book.category === selectedCategory.toLowerCase(),
-        );
+      : books.filter((book) => book.category === selectedCategory);
 
   return (
     <div className="py-10">
@@ -47,6 +49,11 @@ const TopSellers = () => {
           ))}
         </select>
       </div>
+      {isLoading && (
+        <div className="flex items-center justify-center">
+          <div className="h-32 w-32 animate-spin rounded-full border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+      )}
       <Swiper
         slidesPerView={1}
         spaceBetween={20}
