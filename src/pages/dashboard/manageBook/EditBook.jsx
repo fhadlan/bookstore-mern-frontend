@@ -35,7 +35,7 @@ function EditBook() {
       setValue("newPrice", book.newPrice);
       setValue("category", book.category);
       setValue("trending", book.trending);
-      setPreview(getBaseUrl() + "/" + book.coverImage);
+      setPreview(book.coverImage);
     }
   }, [book]);
 
