@@ -18,7 +18,6 @@ const Navbar = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
 
   const navigation = [
-    { name: "Dashboard", href: "/" },
     { name: "Orders", href: "/orders" },
     { name: "Cart Page", href: "/cart" },
     { name: "Checkout", href: "/checkout" },
@@ -41,8 +40,6 @@ const Navbar = () => {
       }
     });
   };
-
-  //console.log(isDropdownOpen);
 
   return (
     <header className="mx-auto max-w-screen-xl px-4 py-6">
@@ -76,7 +73,7 @@ const Navbar = () => {
                   src={avatar}
                   alt="avtar"
                   loading="lazy"
-                  className="${currentUser ? 'ring-2 ring-blue-400' : ''} size-8 rounded-full"
+                  className={`${currentUser ? "ring-2 ring-blue-400" : ""} size-8 rounded-full`}
                 />
               </button>
               {/* dropdown */}
@@ -105,6 +102,13 @@ const Navbar = () => {
                     </li>
                   </ul>
                 </div>
+              )}
+              {/* overlay */}
+              {isDropdownOpen && (
+                <div
+                  onClick={() => setIsDropdownOpen(false)}
+                  className="bg-opacity-50 fixed inset-0 z-30 bg-black"
+                ></div>
               )}
             </>
           ) : (
