@@ -21,6 +21,7 @@ import DashboardLayout from "./pages/dashboard/DashboardLayout.jsx";
 import ManageBook from "./pages/dashboard/manageBook/ManageBook.jsx";
 import AddBook from "./pages/dashboard/manageBook/AddBook.jsx";
 import EditBook from "./pages/dashboard/manageBook/EditBook.jsx";
+import ChangePassword from "./pages/user/ChangePassword.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")).render(
             <Route element={<PrivateRoute />}>
               <Route path="checkout" element={<Checkout />} />
               <Route path="orders" element={<Orders />} />
+              <Route path="profile" element={<ChangePassword />} />
             </Route>
           </Route>
           <Route path="/dashboard">

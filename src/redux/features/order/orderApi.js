@@ -1,12 +1,11 @@
 import getBaseUrl from "../../../utils/getBaseUrl";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getAuth } from "firebase/auth";
+import { auth } from "../../../firebase/firebase.config";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${getBaseUrl()}/api/order`,
   credentials: "include",
   prepareHeaders: async (headers) => {
-    const auth = getAuth();
     const user = auth.currentUser;
     const token = await user.getIdToken();
     if (token) {
