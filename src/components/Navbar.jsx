@@ -107,7 +107,7 @@ const Navbar = () => {
               {isDropdownOpen && (
                 <div
                   onClick={() => setIsDropdownOpen(false)}
-                  className="bg-opacity-50 fixed inset-0 z-30 bg-black"
+                  className="bg-opacity-50 fixed inset-0 z-30"
                 ></div>
               )}
             </>
