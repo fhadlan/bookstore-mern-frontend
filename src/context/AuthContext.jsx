@@ -3,9 +3,12 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  EmailAuthProvider,
+  updatePassword,
 } from "firebase/auth";
 import { createContext, useContext } from "react";
 import { auth } from "../firebase/firebase.config";
@@ -41,6 +44,17 @@ export const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
+  //changeUserPassword
+  const changeUserPassword = async (currentPassword, newPassword) => {
+    const user = auth.currentUser;
+    const credential = EmailAuthProvider.credential(
+      user.email,
+      currentPassword,
+    );
+    await reauthenticateWithCredential(user, credential);
+    await updatePassword(user, newPassword);
+  };
+
   //manage user
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -60,6 +74,7 @@ export const AuthProvider = ({ children }) => {
     loginUser,
     signInWithGoogle,
     logoutUser,
+    changeUserPassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
