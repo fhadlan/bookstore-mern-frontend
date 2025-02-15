@@ -97,6 +97,15 @@ const DashboardLayout = () => {
             </li>
 
             <li>
+              <Link
+                to="orders"
+                className="mt-0 block rounded px-4 py-2 hover:bg-gray-700"
+              >
+                Orders
+              </Link>
+            </li>
+
+            <li>
               <a
                 href="#"
                 className="mt-0 block rounded px-4 py-2 hover:bg-gray-700"
