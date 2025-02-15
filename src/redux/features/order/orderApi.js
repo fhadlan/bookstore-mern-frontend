@@ -21,7 +21,7 @@ const orderApi = createApi({
   tagTypes: ["Order"],
   endpoints: (builder) => ({
     fetchUserOrders: builder.query({
-      query: (id) => `/${id}`,
+      query: ({ id, page }) => `/${id}/${page}`,
       providesTags: (result, error, id) => [{ type: "Order", id }],
     }),
     createOrder: builder.mutation({
@@ -32,8 +32,19 @@ const orderApi = createApi({
       }),
       invalidatesTags: ["Order"],
     }),
+    cancelOrder: builder.mutation({
+      query: (_id) => ({
+        url: `/cancel-order/${_id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Order"],
+    }),
   }),
 });
 
-export const { useCreateOrderMutation, useFetchUserOrdersQuery } = orderApi;
+export const {
+  useCreateOrderMutation,
+  useFetchUserOrdersQuery,
+  useCancelOrderMutation,
+} = orderApi;
 export default orderApi;
