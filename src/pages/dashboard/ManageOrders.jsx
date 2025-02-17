@@ -1,21 +1,66 @@
 import React from "react";
-import { useManageOrdersQuery } from "../../redux/features/order/orderApiAdmin";
-import StatusBadge from "../../components/StatusBadge";
+import {
+  useManageOrdersQuery,
+  useUpdateOrderStatusMutation,
+} from "../../redux/features/order/orderApiAdmin";
 import DetailOrder from "../../components/DetailOrder";
+import { useOutletContext } from "react-router";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 function ManageOrders() {
+  const { changeTitle } = useOutletContext();
   const [isDetailsOpen, setDetailsOpen] = React.useState(null);
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [searchStatus, setSearchStatus] = React.useState("");
+  const [searchOrderId, setSearchOrderId] = React.useState("");
+  const { register, watch } = useForm();
 
+  const statusColors = {
+    pending: "bg-yellow-100 text-yellow-800",
+    processing: "bg-blue-100 text-blue-800",
+    shipped: "bg-orange-100 text-orange-800",
+    delivered: "bg-green-100 text-green-800",
+    cancelled: "bg-red-100 text-red-800",
+  };
+
+  const searchId = watch("orderId") || "";
+
+  //fetch orders
   const {
     data: { orders, totalPages } = [],
     isLoading,
     isError,
-  } = useManageOrdersQuery({ page: currentPage });
+  } = useManageOrdersQuery({
+    page: currentPage,
+    status: searchStatus,
+    id: searchOrderId,
+  });
 
   React.useEffect(() => {
-    console.log(orders);
+    changeTitle("Manage Orders");
+    //console.log(orders);
   }, [orders]);
+
+  // update order status
+  const [updateOrderStatus] = useUpdateOrderStatusMutation();
+
+  const handleUpdateOrderStatus = async (_id, status) => {
+    try {
+      Swal.fire({
+        title: "Update status?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: `No`,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await updateOrderStatus({ id: _id, status });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (isLoading) {
     return <div className="loader"></div>;
@@ -33,10 +78,53 @@ function ManageOrders() {
           <DetailOrder order={isDetailsOpen} />
         </div>
       )}
+      <div className="flex items-center gap-2">
+        <label htmlFor="status" className="font-bold">
+          Filter by Status
+        </label>
+        <select
+          id="status"
+          className="rounded-md border border-slate-300 px-2 py-1"
+          value={searchStatus}
+          onChange={(e) => setSearchStatus(e.target.value)}
+        >
+          <option value="">All</option>
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div className="flex items-center gap-2">
+        <label htmlFor="orderId" className="font-bold">
+          Search by Order Number
+        </label>
+        <input
+          id="orderId"
+          name="orderId"
+          className="rounded-md border border-slate-300 px-2 py-1"
+          type="text"
+          placeholder="Enter Order Number (min 24 characters)"
+          {...register("orderId", {
+            minLength: {
+              value: 24,
+              message: "Correct order number have at least 24 characters",
+            },
+          })}
+        />
+        <button
+          className="bg-primary rounded-md px-2 py-1 text-white disabled:bg-gray-400"
+          onClick={() => setSearchOrderId(searchId)}
+          disabled={searchId.length < 24 && searchId.length > 0}
+        >
+          Search
+        </button>
+      </div>
       <table className="table-auto border-collapse border border-slate-300 shadow-2xl">
         <thead>
           <tr className="bg-slate-300">
-            <th className="px-4 py-2">ID</th>
+            <th className="px-4 py-2">Order Number</th>
             <th className="px-4 py-2">Date of Order</th>
             <th className="px-4 py-2">Item Ordered</th>
             <th className="px-4 py-2">Total Price</th>
@@ -64,7 +152,44 @@ function ManageOrders() {
                 ${order.totalPrice}
               </td>
               <td className="border border-slate-300 px-4 py-2">
-                <StatusBadge status={order.status} />
+                <select
+                  id="status"
+                  className={`rounded-md border border-slate-300 px-2 py-1 ${statusColors[order.status]}`}
+                  value={order.status}
+                  onChange={(e) =>
+                    handleUpdateOrderStatus(order._id, e.target.value)
+                  }
+                >
+                  <option
+                    value="pending"
+                    disabled={
+                      order.status === "shipped" || order.status === "delivered"
+                    }
+                  >
+                    Pending
+                  </option>
+                  <option
+                    value="processing"
+                    disabled={
+                      order.status === "shipped" || order.status === "delivered"
+                    }
+                  >
+                    Processing
+                  </option>
+                  <option
+                    value="shipped"
+                    disabled={order.status === "delivered"}
+                  >
+                    Shipped
+                  </option>
+                  <option
+                    value="delivered"
+                    disabled={order.status === "cancelled"}
+                  >
+                    Delivered
+                  </option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
               </td>
               <td className="border border-slate-300 px-4 py-2">
                 <div className="flex gap-2 text-sm">

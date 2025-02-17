@@ -24,15 +24,28 @@ const orderApiAdmin = createApi({
   tagTypes: ["Order"],
   endpoints: (builder) => ({
     manageOrders: builder.query({
-      query: ({ page = 1 }) => {
+      query: ({ id, status, name, page = 1 }) => {
         let queryParams = new URLSearchParams();
         queryParams.append("page", page);
+        status && queryParams.append("status", status);
+        id && queryParams.append("id", id);
+        name && queryParams.append("name", name);
+        console.log(queryParams.toString());
         return `/manage-order?${queryParams.toString()}`;
       },
       providesTags: ["Order"],
     }),
+    updateOrderStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/update-order-status/${id}`,
+        method: "PUT",
+        body: { status },
+      }),
+      invalidatesTags: ["Order"],
+    }),
   }),
 });
 
-export const { useManageOrdersQuery } = orderApiAdmin;
+export const { useManageOrdersQuery, useUpdateOrderStatusMutation } =
+  orderApiAdmin;
 export default orderApiAdmin;
