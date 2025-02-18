@@ -58,6 +58,10 @@ const bookApi = createApi({
       }),
       invalidatesTags: ["Book"],
     }),
+    fetchBannerImage: builder.query({
+      query: () => "/banner/banner-image",
+      providesTags: ["Book"],
+    }),
   }),
 });
 
@@ -68,6 +72,7 @@ export const {
   useUpdateBookMutation,
   useDeleteBookMutation,
   useFetchBookTableDataQuery,
+  useFetchBannerImageQuery,
 } = bookApi;
 
 export default bookApi;
