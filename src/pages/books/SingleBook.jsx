@@ -29,7 +29,7 @@ const SingleBook = () => {
         <div className="flex gap-4">
           <div className="flex flex-shrink-0 flex-col items-center">
             <img
-              src={`${getImgUrl(book?.coverImage)}`}
+              src={book.coverImage}
               alt=""
               className="cursor-pointer rounded-md bg-cover"
             />
