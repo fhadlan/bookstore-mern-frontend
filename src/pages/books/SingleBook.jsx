@@ -10,7 +10,7 @@ import { getImgUrl } from "../../utils/getImgUrl";
 const SingleBook = () => {
   const { id } = useParams();
   const { data: book, isLoading, isError } = useFetchSingleBookQuery(id);
-  console.log(book);
+  //console.log(book);
 
   const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ const SingleBook = () => {
         <div className="flex gap-4">
           <div className="flex flex-shrink-0 flex-col items-center">
             <img
-              src={book.coverImage}
+              src={book?.coverImage}
               alt=""
               className="cursor-pointer rounded-md bg-cover"
             />
