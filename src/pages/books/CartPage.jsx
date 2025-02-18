@@ -82,7 +82,7 @@ const CartPage = () => {
                       <div>
                         <div className="flex flex-wrap justify-between text-base font-medium text-gray-900">
                           <h3>
-                            <Link to={`/book/${book._id}`}>{item.title}</Link>
+                            <Link to={`/book/${item._id}`}>{item.title}</Link>
                           </h3>
                           <p className="sm:ml-4">${item.newPrice}</p>
                         </div>
