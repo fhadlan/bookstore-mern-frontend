@@ -28,7 +28,7 @@ const bookApi = createApi({
       providesTags: ["Book"],
     }),
     fetchSingleBook: builder.query({
-      query: (id) => `/${id}`,
+      query: (id) => `/book/${id}`,
       providesTags: (result, error, id) => [{ type: "Book", id }],
     }),
     fetchBookTableData: builder.query({
@@ -62,6 +62,10 @@ const bookApi = createApi({
       query: () => "/banner/banner-image",
       providesTags: ["Book"],
     }),
+    searchBook: builder.query({
+      query: ({ title, page }) => `/search?title=${title}&page=${page}`,
+      providesTags: ["Book"],
+    }),
   }),
 });
 
@@ -73,6 +77,7 @@ export const {
   useDeleteBookMutation,
   useFetchBookTableDataQuery,
   useFetchBannerImageQuery,
+  useSearchBookQuery,
 } = bookApi;
 
 export default bookApi;

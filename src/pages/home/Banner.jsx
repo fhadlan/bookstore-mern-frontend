@@ -13,9 +13,7 @@ import { EffectCoverflow, Pagination } from "swiper/modules";
 
 const Banner = () => {
   const { data: banner, isLoading } = useFetchBannerImageQuery();
-  React.useEffect(() => {
-    console.log(banner);
-  }, [banner]);
+
   return (
     <div className="flex flex-col items-center justify-between gap-12 py-16 md:flex-row-reverse">
       <div className="flex w-full items-center md:w-1/2 md:justify-end">

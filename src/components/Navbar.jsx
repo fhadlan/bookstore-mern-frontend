@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import {
   FaMagnifyingGlass,
   FaBars,
@@ -14,8 +14,15 @@ import { useAuth } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
 const Navbar = () => {
+  const [searchParams] = useSearchParams();
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [search, setSearch] = React.useState(searchParams.get("title") || "");
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.cartItems);
+
+  React.useEffect(() => {
+    setSearch(searchParams.get("title") || "");
+  }, [searchParams]);
 
   const navigation = [
     { name: "Orders", href: "/orders" },
@@ -41,6 +48,12 @@ const Navbar = () => {
     });
   };
 
+  const handleSearch = () => {
+    if (search.trim()) {
+      navigate(`/search?title=${encodeURIComponent(search)}`);
+    }
+  };
+
   return (
     <header className="mx-auto max-w-screen-xl px-4 py-6">
       <nav className="flex items-center justify-between">
@@ -51,12 +64,17 @@ const Navbar = () => {
           </Link>
 
           {/* search bar */}
-          <div className="mr-4 flex items-start gap-2 rounded-sm bg-[#eaeaea] px-6 py-1.5 pl-1 shadow-sm">
-            <FaMagnifyingGlass className="size-6" />
+          <div className="mr-4 flex items-start gap-2 rounded-sm bg-[#eaeaea] px-6 py-1.5 pr-2 pl-1 shadow-sm">
             <input
               type="search"
               placeholder="Search"
               className="w-48 rounded-md focus:outline-none"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <FaMagnifyingGlass
+              onClick={handleSearch}
+              className="bg-primary hover:bg-secondary size-6 rounded p-1 transition-colors hover:cursor-pointer hover:text-white"
             />
           </div>
         </div>
