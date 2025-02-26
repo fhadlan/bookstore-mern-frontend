@@ -1,10 +1,13 @@
+## Demo
+
+https://bookstore-mern-frontend-dusky.vercel.app/
+
 ## to do
 
--add review
--add user change/forgot password
--touch up orders page
--auto logout user(firebase)
--backend admin ganti password/manage order
+- add review
+- add user change/forgot password
+- auto logout user(firebase)
+- backend admin ganti password
 
 # Bookstore App
 
