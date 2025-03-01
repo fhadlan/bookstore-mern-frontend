@@ -9,6 +9,7 @@ import {
   signOut,
   EmailAuthProvider,
   updatePassword,
+  getAuth,
 } from "firebase/auth";
 import { createContext, useContext } from "react";
 import { auth } from "../firebase/firebase.config";
@@ -74,6 +75,7 @@ export const AuthProvider = ({ children }) => {
     logoutUser,
     changeUserPassword,
     loading,
+    getAuth,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

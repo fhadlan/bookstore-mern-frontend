@@ -3,8 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router";
 
 function Profile() {
-  const { currentUser: user } = useAuth();
-  console.log(user.photoURL);
+  const user = useAuth().currentUser;
   return (
     <div className="mx-auto flex max-w-md flex-col items-center rounded p-4 shadow-2xl">
       <img

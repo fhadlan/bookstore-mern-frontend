@@ -57,7 +57,7 @@ function EditBook() {
     formData.append("newPrice", data.newPrice);
     formData.append("category", data.category);
     formData.append("trending", data.trending);
-    console.log(formData.get("_id"));
+    //console.log(formData.get("_id"));
     try {
       await updateBook(formData);
       Swal.fire({
