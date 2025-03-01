@@ -25,6 +25,7 @@ const Navbar = () => {
   }, [searchParams]);
 
   const navigation = [
+    { name: "Profile", href: "/profile" },
     { name: "Orders", href: "/orders" },
     { name: "Cart Page", href: "/cart" },
     { name: "Checkout", href: "/checkout" },

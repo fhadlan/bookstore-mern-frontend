@@ -1,20 +1,17 @@
 import React, { useEffect } from "react";
-import { auth } from "../firebase/firebase.config";
+import { useAuth } from "../context/AuthContext";
+//import { auth } from "../firebase/firebase.config";
 import { Outlet, useNavigate } from "react-router";
 
 function PrivateRoute() {
-  const [loading, setLoading] = React.useState(true);
+  const { currentUser, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (!user) {
-        navigate("/login");
-      }
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, [navigate]);
+    if (!currentUser && !loading) {
+      navigate("/login");
+    }
+  }, [currentUser, loading, navigate]);
 
   if (loading) {
     return (

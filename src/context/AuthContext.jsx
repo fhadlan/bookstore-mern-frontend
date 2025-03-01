@@ -15,6 +15,8 @@ import { auth } from "../firebase/firebase.config";
 
 const AuthContext = createContext();
 const googleProvider = new GoogleAuthProvider();
+
+//auth context
 export const useAuth = () => {
   return useContext(AuthContext);
 };
@@ -60,12 +62,8 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
-      if (user) {
-        const { email, displayName, photoURL } = user;
-        const userData = { email, userName: displayName, photo: photoURL };
-      }
     });
-    return () => unsubscribe();
+    return unsubscribe;
   });
 
   const value = {
@@ -75,6 +73,7 @@ export const AuthProvider = ({ children }) => {
     signInWithGoogle,
     logoutUser,
     changeUserPassword,
+    loading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

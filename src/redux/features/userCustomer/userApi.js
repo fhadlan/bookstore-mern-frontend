@@ -1,6 +1,7 @@
 import getBaseUrl from "../../../utils/getBaseUrl";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { auth } from "../../../firebase/firebase.config";
+import { updateProfile } from "firebase/auth";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${getBaseUrl()}/api/user`,
@@ -27,8 +28,15 @@ const userApi = createApi({
         body: data,
       }),
     }),
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: "/update-profile",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useChangePasswordMutation } = userApi;
+export const { useChangePasswordMutation, useUpdateProfileMutation } = userApi;
 export default userApi;
