@@ -30,7 +30,6 @@ const orderApiAdmin = createApi({
         status && queryParams.append("status", status);
         id && queryParams.append("id", id);
         name && queryParams.append("name", name);
-        console.log(queryParams.toString());
         return `/manage-order?${queryParams.toString()}`;
       },
       providesTags: ["Order"],

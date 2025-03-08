@@ -1,26 +1,19 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router";
+import { useGetAdminQuery } from "../redux/features/admin/adminApi";
 
 function AdminRoute() {
-  const isTokenExpired = (token) => {
-    if (!token) {
-      return <Navigate to="/dashboard/login" />;
-    } // No token means expired or not logged in
+  const { data, error, isLoading } = useGetAdminQuery();
 
-    const payload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
-    const expiry = payload.exp * 1000; // Convert to milliseconds
+  if (isLoading) {
+    return <div className="loader"></div>;
+  }
 
-    return Date.now() >= expiry; // Compare with current time
-  };
-
-  const token = localStorage.getItem("token");
-
-  if (isTokenExpired(token)) {
-    localStorage.removeItem("token"); // Remove expired token
+  if (error?.status === 401 || !data) {
     return <Navigate to="/dashboard/login" />;
   }
 
-  return <Outlet />;
+  return data && <Outlet />;
 }
 
 export default AdminRoute;

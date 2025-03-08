@@ -4,6 +4,7 @@ import bookApi from "./features/book/bookApi.js";
 import orderApi from "./features/order/orderApi.js";
 import userApi from "./features/userCustomer/userApi.js";
 import orderApiAdmin from "./features/order/orderApiAdmin.js";
+import adminApi from "./features/admin/adminApi.js";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     [orderApi.reducerPath]: orderApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [orderApiAdmin.reducerPath]: orderApiAdmin.reducer,
+    [adminApi.reducerPath]: adminApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -19,5 +21,6 @@ export const store = configureStore({
       orderApi.middleware,
       userApi.middleware,
       orderApiAdmin.middleware,
+      adminApi.middleware,
     ),
 });

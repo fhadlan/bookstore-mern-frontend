@@ -1,12 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import getBaseUrl from "../utils/getBaseUrl";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { useLoginAdminMutation } from "../redux/features/admin/adminApi";
 
 function AdminLogin() {
   const navigate = useNavigate();
+  const [adminLogin] = useLoginAdminMutation();
+
   const {
     register,
     handleSubmit,
@@ -16,28 +17,20 @@ function AdminLogin() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        `${getBaseUrl()}/api/user/login`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const auth = response.data;
-      if (auth.token) {
-        localStorage.setItem("token", auth.token);
-      }
+      await adminLogin(data);
       Swal.fire({
         icon: "success",
         title: "Login successful",
         showConfirmButton: false,
         timer: 1500,
+      }).finally(() => {
+        navigate("/dashboard");
       });
-      navigate("/dashboard");
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <div className="flex h-[calc(100vh-64px)] min-w-2xs items-center justify-center">
       <div className="w-full max-w-xs">
