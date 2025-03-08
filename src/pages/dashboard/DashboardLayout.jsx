@@ -2,11 +2,13 @@ import React from "react";
 import { Link, Outlet, useNavigate } from "react-router";
 import { MdClose } from "react-icons/md";
 import Swal from "sweetalert2";
+import { useAdminLogoutMutation } from "../../redux/features/admin/adminApi";
 
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [bookDropdownOpen, setBookDropdownOpen] = React.useState(false);
   const [pageTitle, setPageTitle] = React.useState("Dashboard");
+  const [logout] = useAdminLogoutMutation();
   const navigate = useNavigate();
 
   const changeTitle = (title) => {
@@ -21,9 +23,9 @@ const DashboardLayout = () => {
       showDenyButton: true,
       confirmButtonText: "Yes",
       denyButtonText: "No",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("token");
+        await logout();
         navigate("/dashboard/login");
       }
     });

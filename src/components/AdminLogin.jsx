@@ -18,7 +18,7 @@ function AdminLogin() {
   const onSubmit = async (data) => {
     try {
       await adminLogin(data);
-      Swal.fire({
+      await Swal.fire({
         icon: "success",
         title: "Login successful",
         showConfirmButton: false,

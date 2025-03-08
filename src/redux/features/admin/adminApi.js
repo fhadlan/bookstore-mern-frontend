@@ -20,8 +20,18 @@ const adminApi = createApi({
     getAdmin: builder.query({
       query: () => "/dashboard",
     }),
+    adminLogout: builder.mutation({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useLoginAdminMutation, useGetAdminQuery } = adminApi;
+export const {
+  useLoginAdminMutation,
+  useGetAdminQuery,
+  useAdminLogoutMutation,
+} = adminApi;
 export default adminApi;
