@@ -11,7 +11,7 @@ function AdminRoute() {
   }
 
   if (error?.status === 401 || !data) {
-    navigate("/dashboard/login", { replace: true });
+    navigate("/dashboard/login");
   }
 
   return data && <Outlet />;
