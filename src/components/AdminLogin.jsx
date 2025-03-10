@@ -75,8 +75,8 @@ function AdminLogin() {
               <p className="mt-1 text-xs text-red-500">Enter password</p>
             )}
           </div>
-          <div className="mt-5 flex items-center justify-center">
-            <button className="focus:shadow-outline w-full rounded bg-blue-500 px-4 py-2 font-bold text-white hover:cursor-pointer hover:bg-blue-700 focus:outline-none">
+          <div className="mt-5">
+            <button className="focus:shadow-outline flex w-full items-center justify-center rounded bg-blue-500 px-4 py-2 font-bold text-white hover:cursor-pointer hover:bg-blue-700 focus:outline-none">
               {isLoading ? (
                 <div className="flex h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
               ) : (
