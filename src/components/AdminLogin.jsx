@@ -16,7 +16,7 @@ function AdminLogin() {
     if (admin) {
       navigate("/dashboard", { replace: true });
     }
-  }, []);
+  });
 
   const {
     register,
