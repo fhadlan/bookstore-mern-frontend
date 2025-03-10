@@ -34,9 +34,8 @@ function AdminLogin() {
         title: "Login successful",
         showConfirmButton: false,
         timer: 1500,
-      }).finally(() => {
-        navigate("/dashboard", { replace: true });
       });
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       console.log(error);
     }
