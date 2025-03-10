@@ -12,9 +12,11 @@ function AdminLogin() {
   const [adminLogin, { isLoading }] = useLoginAdminMutation();
   const { data: admin } = useGetAdminQuery();
 
-  if (admin) {
-    navigate("/dashboard", { replace: true });
-  }
+  React.useEffect(() => {
+    if (admin) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, []);
 
   const {
     register,
