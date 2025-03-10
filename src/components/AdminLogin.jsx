@@ -10,8 +10,11 @@ import {
 function AdminLogin() {
   const navigate = useNavigate();
   const [adminLogin, { isLoading }] = useLoginAdminMutation();
-  const { data: admin } = useGetAdminQuery();
+  const { data: admin, isLoading: adminLoading } = useGetAdminQuery();
 
+  if (adminLoading) {
+    return <div className="loader"></div>;
+  }
   if (admin) {
     navigate("/dashboard", { replace: true });
   }
