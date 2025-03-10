@@ -6,7 +6,7 @@ import { useLoginAdminMutation } from "../redux/features/admin/adminApi";
 
 function AdminLogin() {
   const navigate = useNavigate();
-  const [adminLogin] = useLoginAdminMutation();
+  const [adminLogin, { isLoading }] = useLoginAdminMutation();
 
   const {
     register,
@@ -24,7 +24,7 @@ function AdminLogin() {
         showConfirmButton: false,
         timer: 1500,
       }).finally(() => {
-        navigate("/dashboard");
+        navigate("/dashboard", { replace: true });
       });
     } catch (error) {
       console.log(error);
@@ -77,7 +77,7 @@ function AdminLogin() {
           </div>
           <div className="mt-5 flex items-center justify-between">
             <button className="focus:shadow-outline w-full rounded bg-blue-500 px-4 py-2 font-bold text-white hover:cursor-pointer hover:bg-blue-700 focus:outline-none">
-              Login
+              {isLoading ? "<div class='loader'></div>" : "Login"}
             </button>
           </div>
           <p className="mt-4 text-center text-xs text-gray-600">
