@@ -2,11 +2,19 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
-import { useLoginAdminMutation } from "../redux/features/admin/adminApi";
+import {
+  useGetAdminQuery,
+  useLoginAdminMutation,
+} from "../redux/features/admin/adminApi";
 
 function AdminLogin() {
   const navigate = useNavigate();
   const [adminLogin, { isLoading }] = useLoginAdminMutation();
+  const { data: admin } = useGetAdminQuery();
+
+  if (admin) {
+    navigate("/dashboard", { replace: true });
+  }
 
   const {
     register,
