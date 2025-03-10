@@ -77,7 +77,11 @@ function AdminLogin() {
           </div>
           <div className="mt-5 flex items-center justify-between">
             <button className="focus:shadow-outline w-full rounded bg-blue-500 px-4 py-2 font-bold text-white hover:cursor-pointer hover:bg-blue-700 focus:outline-none">
-              {isLoading ? <div className="loader"></div> : "Login"}
+              {isLoading ? (
+                <div className="flex h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
+              ) : (
+                "Login"
+              )}
             </button>
           </div>
           <p className="mt-4 text-center text-xs text-gray-600">
