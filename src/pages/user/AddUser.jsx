@@ -1,10 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router";
+import { useCreateUserMutation } from "../../redux/features/admin/adminApi";
+import Swal from "sweetalert2";
 
 function AddUser() {
   const { changeTitle, isAdmin } = useOutletContext();
   const navigate = useNavigate();
+  const [createUser, { isLoading, isError }] = useCreateUserMutation();
 
   React.useEffect(() => {
     changeTitle("Create User");
@@ -22,8 +25,21 @@ function AddUser() {
 
   const password = watch("password");
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+    try {
+      await createUser(data);
+      if (!isError) {
+        Swal.fire({
+          icon: "success",
+          title: "User added successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -32,6 +48,20 @@ function AddUser() {
         className="mb-4 flex flex-col rounded bg-white px-8 pt-6 pb-8 shadow-md"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <label className="mb-2 flex flex-col text-sm font-bold text-gray-700">
+          Name
+          <input
+            className="max-w-xs rounded border p-2"
+            placeholder="Name"
+            type="text"
+            {...register("name", { required: "Name is required" })}
+          />
+          {errors.name && (
+            <span className="max-w-xs text-xs text-red-500">
+              {errors.name.message}
+            </span>
+          )}
+        </label>
         <label className="mb-2 flex flex-col text-sm font-bold text-gray-700">
           Email
           <input
@@ -88,6 +118,15 @@ function AddUser() {
               {errors.confirmPassword.message}
             </span>
           )}
+        </label>
+        <label className="mb-2 flex flex-row text-sm font-bold text-gray-700">
+          Super Admin?
+          <input
+            className="ml-2 max-w-xs rounded border p-2"
+            placeholder="Super Admin?"
+            type="checkbox"
+            {...register("isAdmin")}
+          />
         </label>
         <button
           className="max-w-xs rounded bg-blue-500 px-4 py-2 text-white"

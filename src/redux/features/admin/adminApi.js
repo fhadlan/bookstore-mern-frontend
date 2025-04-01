@@ -26,6 +26,13 @@ const adminApi = createApi({
         method: "POST",
       }),
     }),
+    createUser: builder.mutation({
+      query: (data) => ({
+        url: "/create-user",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -33,5 +40,6 @@ export const {
   useLoginAdminMutation,
   useGetAdminQuery,
   useAdminLogoutMutation,
+  useCreateUserMutation,
 } = adminApi;
 export default adminApi;
