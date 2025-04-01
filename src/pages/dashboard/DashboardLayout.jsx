@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Outlet, useNavigate } from "react-router";
+import { Link, Outlet, useNavigate, useOutletContext } from "react-router";
 import { MdClose } from "react-icons/md";
 import Swal from "sweetalert2";
 import { useAdminLogoutMutation } from "../../redux/features/admin/adminApi";
@@ -10,6 +10,7 @@ const DashboardLayout = () => {
   const [userDropdownOpen, setUserDropdownOpen] = React.useState(false);
   const [pageTitle, setPageTitle] = React.useState("Dashboard");
   const [logout] = useAdminLogoutMutation();
+  const { isAdmin } = useOutletContext();
   const navigate = useNavigate();
 
   const changeTitle = (title) => {
@@ -65,40 +66,42 @@ const DashboardLayout = () => {
               </Link>
             </li>
 
-            <li className="relative">
-              <button
-                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex w-full justify-between rounded px-4 py-2 text-left hover:bg-gray-700"
-              >
-                User
-                <span>{userDropdownOpen ? "▲" : "▼"}</span>
-              </button>
+            {isAdmin && (
+              <li className="relative">
+                <button
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="flex w-full justify-between rounded px-4 py-2 text-left hover:bg-gray-700"
+                >
+                  User
+                  <span>{userDropdownOpen ? "▲" : "▼"}</span>
+                </button>
 
-              <ul
-                className={`overflow-hidden rounded transition-all ease-in-out ${
-                  userDropdownOpen
-                    ? "max-h-40 opacity-100"
-                    : "max-h-0 opacity-0"
-                }`}
-              >
-                <li>
-                  <Link
-                    to="create-user"
-                    className="ml-4 block rounded px-4 py-2 hover:bg-gray-700"
-                  >
-                    Add User
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="manage-book"
-                    className="ml-4 block rounded px-4 py-2 hover:bg-gray-700"
-                  >
-                    Manage User
-                  </Link>
-                </li>
-              </ul>
-            </li>
+                <ul
+                  className={`overflow-hidden rounded transition-all ease-in-out ${
+                    userDropdownOpen
+                      ? "max-h-40 opacity-100"
+                      : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <li>
+                    <Link
+                      to="create-user"
+                      className="ml-4 block rounded px-4 py-2 hover:bg-gray-700"
+                    >
+                      Add User
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="manage-book"
+                      className="ml-4 block rounded px-4 py-2 hover:bg-gray-700"
+                    >
+                      Manage User
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            )}
 
             <li className="relative">
               <button
@@ -188,7 +191,7 @@ const DashboardLayout = () => {
         </header>
 
         <main className="mt-16 flex-1 p-6">
-          <Outlet context={{ changeTitle }} />
+          <Outlet context={{ changeTitle, isAdmin }} />
         </main>
       </div>
     </div>

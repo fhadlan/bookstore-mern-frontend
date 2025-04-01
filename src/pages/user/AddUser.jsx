@@ -1,12 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useOutletContext } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 
 function AddUser() {
-  const { changeTitle } = useOutletContext();
+  const { changeTitle, isAdmin } = useOutletContext();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     changeTitle("Create User");
+    if (!isAdmin) {
+      navigate("/dashboard");
+    }
   }, []);
 
   const {

@@ -13,7 +13,7 @@ function AdminRoute() {
     return <Navigate to="/dashboard/login" replace />;
   }
 
-  return data && <Outlet />;
+  return data && <Outlet context={{ isAdmin: data.isAdmin }} />;
 }
 
 export default AdminRoute;
