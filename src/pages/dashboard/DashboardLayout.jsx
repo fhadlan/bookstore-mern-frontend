@@ -7,6 +7,7 @@ import { useAdminLogoutMutation } from "../../redux/features/admin/adminApi";
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [bookDropdownOpen, setBookDropdownOpen] = React.useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = React.useState(false);
   const [pageTitle, setPageTitle] = React.useState("Dashboard");
   const [logout] = useAdminLogoutMutation();
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const DashboardLayout = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await logout();
-        navigate("/dashboard/login");
+        window.location.href = "/dashboard/login";
       }
     });
   };
@@ -63,6 +64,42 @@ const DashboardLayout = () => {
                 Dashboard
               </Link>
             </li>
+
+            <li className="relative">
+              <button
+                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                className="flex w-full justify-between rounded px-4 py-2 text-left hover:bg-gray-700"
+              >
+                User
+                <span>{userDropdownOpen ? "▲" : "▼"}</span>
+              </button>
+
+              <ul
+                className={`overflow-hidden rounded transition-all ease-in-out ${
+                  userDropdownOpen
+                    ? "max-h-40 opacity-100"
+                    : "max-h-0 opacity-0"
+                }`}
+              >
+                <li>
+                  <Link
+                    to="create-user"
+                    className="ml-4 block rounded px-4 py-2 hover:bg-gray-700"
+                  >
+                    Add User
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="manage-book"
+                    className="ml-4 block rounded px-4 py-2 hover:bg-gray-700"
+                  >
+                    Manage User
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
             <li className="relative">
               <button
                 onClick={() => setBookDropdownOpen(!bookDropdownOpen)}
