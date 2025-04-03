@@ -1,13 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router";
-import { useCreateUserMutation } from "../../redux/features/admin/adminApi";
+import { useCreateUserMutation } from "../../../redux/features/admin/adminApi";
+import { FaSpinner } from "react-icons/fa6";
 import Swal from "sweetalert2";
 
 function AddUser() {
   const { changeTitle, isAdmin } = useOutletContext();
   const navigate = useNavigate();
-  const [createUser, { isLoading, isError }] = useCreateUserMutation();
+  const [createUser, { isLoading }] = useCreateUserMutation();
 
   React.useEffect(() => {
     changeTitle("Create User");
@@ -28,17 +29,22 @@ function AddUser() {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      await createUser(data);
-      if (!isError) {
-        Swal.fire({
-          icon: "success",
-          title: "User added successfully",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
+      const response = await createUser(data).unwrap();
+
+      Swal.fire({
+        icon: "success",
+        title: "User added successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: error.data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -129,10 +135,10 @@ function AddUser() {
           />
         </label>
         <button
-          className="max-w-xs rounded bg-blue-500 px-4 py-2 text-white"
+          className="flex max-w-xs items-center justify-center rounded bg-blue-500 px-4 py-2 text-white"
           type="submit"
         >
-          Create
+          {isLoading ? <FaSpinner className="animate-spin" /> : "Create User"}
         </button>
       </form>
     </div>

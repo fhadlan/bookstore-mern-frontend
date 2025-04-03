@@ -148,14 +148,6 @@ const DashboardLayout = () => {
             </li>
 
             <li>
-              <a
-                href="#"
-                className="mt-0 block rounded px-4 py-2 hover:bg-gray-700"
-              >
-                Profile
-              </a>
-            </li>
-            <li>
               <a href="#" className="block rounded px-4 py-2 hover:bg-gray-700">
                 Settings
               </a>
@@ -180,9 +172,9 @@ const DashboardLayout = () => {
             </button>
             <h1 className="text-xl font-bold">{pageTitle}</h1>
             <div className="space-x-4">
-              <a href="#" className="hover:text-gray-400">
+              <Link to="profile" className="hover:text-gray-400">
                 Profile
-              </a>
+              </Link>
               <button onClick={handleLogout} className="hover:text-gray-400">
                 Logout
               </button>
