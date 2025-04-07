@@ -27,7 +27,7 @@ function AdminLogin() {
 
   const onSubmit = async (data) => {
     try {
-      await adminLogin(data);
+      await adminLogin(data).unwrap();
       await Swal.fire({
         icon: "success",
         title: "Login successful",
@@ -36,7 +36,12 @@ function AdminLogin() {
       });
       navigate("/dashboard", { replace: true });
     } catch (error) {
-      console.log(error.message);
+      Swal.fire({
+        icon: "error",
+        title: error.data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 

@@ -33,6 +33,13 @@ const adminApi = createApi({
         body: data,
       }),
     }),
+    changePasswordAdmin: builder.mutation({
+      query: (data) => ({
+        url: "/change-password-admin",
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -41,5 +48,6 @@ export const {
   useGetAdminQuery,
   useAdminLogoutMutation,
   useCreateUserMutation,
+  useChangePasswordAdminMutation,
 } = adminApi;
 export default adminApi;
