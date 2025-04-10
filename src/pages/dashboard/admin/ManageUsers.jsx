@@ -1,11 +1,15 @@
 import React from "react";
-import { useFetchUsersQuery } from "../../../redux/features/admin/adminApi";
+import { useGetUsersQuery } from "../../../redux/features/admin/adminApi";
 
 function ManageUsers() {
-  const { data: users, isLoading } = useFetchUsersQuery();
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const { data: { users, totalPages } = {}, isLoading } = useGetUsersQuery({
+    page: currentPage,
+    search: "",
+  });
   React.useEffect(() => {
-    console.log(users);
-  }, []);
+    console.log(users, totalPages);
+  }, [users]);
   return <div>ManageUsers</div>;
 }
 

@@ -26,8 +26,9 @@ const adminApi = createApi({
         method: "POST",
       }),
     }),
-    fetchUsers: builder.query({
-      query: () => "/users",
+    getUsers: builder.query({
+      query: ({ page = 1, search = "" }) =>
+        `/users?page=${page}&search=${search}`,
     }),
     createUser: builder.mutation({
       query: (data) => ({
@@ -52,7 +53,7 @@ export const {
   useAdminLogoutMutation,
   useCreateUserMutation,
   useChangePasswordAdminMutation,
-  useFetchUsersQuery,
+  useGetUsersQuery,
 } = adminApi;
 
 export default adminApi;
