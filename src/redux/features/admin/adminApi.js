@@ -29,6 +29,7 @@ const adminApi = createApi({
     getUsers: builder.query({
       query: ({ page = 1, search = "" }) =>
         `/users?page=${page}&search=${search}`,
+      providesTags: ["User"],
     }),
     createUser: builder.mutation({
       query: (data) => ({
@@ -44,6 +45,14 @@ const adminApi = createApi({
         body: data,
       }),
     }),
+    patchAdminStatus: builder.mutation({
+      query: ({ id, isAdmin }) => ({
+        url: `/patch-admin-status/${id}`,
+        method: "PATCH",
+        body: { isAdmin },
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -54,6 +63,7 @@ export const {
   useCreateUserMutation,
   useChangePasswordAdminMutation,
   useGetUsersQuery,
+  usePatchAdminStatusMutation,
 } = adminApi;
 
 export default adminApi;
