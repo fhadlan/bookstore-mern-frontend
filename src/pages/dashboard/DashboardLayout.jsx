@@ -93,7 +93,7 @@ const DashboardLayout = () => {
                   </li>
                   <li>
                     <Link
-                      to="manage-book"
+                      to="manage-users"
                       className="ml-4 block rounded px-4 py-2 hover:bg-gray-700"
                     >
                       Manage User

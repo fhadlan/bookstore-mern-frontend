@@ -28,6 +28,7 @@ import Profile from "./pages/user/Profile.jsx";
 import EditProfile from "./pages/user/EditProfile.jsx";
 import AddUser from "./pages/dashboard/admin/AddUser.jsx";
 import ProfileAdmin from "./pages/dashboard/admin/ProfileAdmin.jsx";
+import ManageUsers from "./pages/dashboard/admin/ManageUsers.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -61,6 +62,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="edit-book/:id" element={<EditBook />} />
                 <Route path="orders" element={<ManageOrders />} />
                 <Route path="create-user" element={<AddUser />} />
+                <Route path="manage-users" element={<ManageUsers />} />
                 <Route path="profile" element={<ProfileAdmin />} />
               </Route>
             </Route>
