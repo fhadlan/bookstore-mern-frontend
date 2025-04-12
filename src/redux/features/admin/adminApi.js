@@ -37,6 +37,7 @@ const adminApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["User"],
     }),
     changePasswordAdmin: builder.mutation({
       query: (data) => ({

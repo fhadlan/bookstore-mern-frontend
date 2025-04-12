@@ -5,13 +5,16 @@ import {
 } from "../../../redux/features/admin/adminApi";
 import { useNavigate, useOutletContext } from "react-router";
 import Swal from "sweetalert2";
+import { FaKey, FaTrash } from "react-icons/fa6";
 
 function ManageUsers() {
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [search, setSearch] = React.useState("");
+  const [debouncedSearch, setDebouncedSearch] = React.useState("");
   const { changeTitle, isAdmin } = useOutletContext();
   const { data: { users, totalPages } = {}, isLoading } = useGetUsersQuery({
     page: currentPage,
-    search: "",
+    search: debouncedSearch,
   });
   const [updateAdminStatus] = usePatchAdminStatusMutation();
   const navigate = useNavigate();
@@ -24,13 +27,16 @@ function ManageUsers() {
   }, []);
 
   React.useEffect(() => {
-    console.log(users, totalPages);
-  }, [users]);
+    const delayDebounceFn = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [search]);
 
   const handleToggle = async (e, id) => {
     const isChecked = e.target.checked;
     const confirmation = await Swal.fire({
-      title: `Are you sure you want to ${isChecked ? "remove" : "make"} this user a superadmin?`,
+      title: `Are you sure you want to ${!isChecked ? "remove" : "make"} this user a superadmin?`,
       showDenyButton: true,
       confirmButtonText: "Yes",
       denyButtonText: `No`,
@@ -44,13 +50,21 @@ function ManageUsers() {
 
   return (
     <div>
-      <div className="overflow-x-auto">
-        <table className="table-auto border-collapse border border-slate-300 shadow-2xl">
+      <div>
+        <input
+          type="text"
+          placeholder="Search by name or email"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="mb-4 rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        />
+        <table className="min-w-full table-auto border-collapse border border-slate-300 shadow-2xl">
           <thead>
             <tr className="bg-slate-300">
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Email</th>
               <th className="px-4 py-2">Super Admin</th>
+              <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -69,6 +83,14 @@ function ManageUsers() {
                     checked={user.isAdmin}
                     onChange={(e) => handleToggle(e, user._id)}
                   />
+                </td>
+                <td className="px-4 py-2">
+                  <button className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-700">
+                    <FaKey />
+                  </button>
+                  <button className="ml-2 rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-700">
+                    <FaTrash />
+                  </button>
                 </td>
               </tr>
             ))}

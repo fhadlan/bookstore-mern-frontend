@@ -27,7 +27,7 @@ function AddUser() {
   const password = watch("password");
 
   const onSubmit = async (data) => {
-    console.log(data);
+    //console.log(data);
     try {
       const response = await createUser(data).unwrap();
 
