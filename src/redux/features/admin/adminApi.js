@@ -54,6 +54,13 @@ const adminApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/delete-user/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -65,6 +72,7 @@ export const {
   useChangePasswordAdminMutation,
   useGetUsersQuery,
   usePatchAdminStatusMutation,
+  useDeleteUserMutation,
 } = adminApi;
 
 export default adminApi;
