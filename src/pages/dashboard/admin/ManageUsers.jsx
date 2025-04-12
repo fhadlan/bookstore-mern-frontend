@@ -6,12 +6,15 @@ import {
 } from "../../../redux/features/admin/adminApi";
 import { useNavigate, useOutletContext } from "react-router";
 import Swal from "sweetalert2";
-import { FaCircleDot, FaKey, FaSpinner, FaTrash } from "react-icons/fa6";
+import { FaKey, FaSpinner, FaTrash } from "react-icons/fa6";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 function ManageUsers() {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = React.useState("");
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [selectedId, setSelectedId] = React.useState(null);
   const { changeTitle, isAdmin } = useOutletContext();
   const { data: { users, totalPages } = {}, isLoading } = useGetUsersQuery({
     page: currentPage,
@@ -67,6 +70,11 @@ function ManageUsers() {
     }
   };
 
+  const handleModal = (id) => {
+    setSelectedId(id);
+    setIsModalOpen(!isModalOpen);
+  };
+
   return (
     <div>
       <div>
@@ -109,15 +117,20 @@ function ManageUsers() {
                     />
                   </td>
                   <td className="px-4 py-2">
-                    <button className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-700">
-                      <FaKey />
-                    </button>
-                    <button
-                      className="ml-2 rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-700"
-                      onClick={() => handleDelete(user._id)}
-                    >
-                      <FaTrash />
-                    </button>
+                    <div className="flex">
+                      <button
+                        className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+                        onClick={() => handleModal(user._id)}
+                      >
+                        <FaKey />
+                      </button>
+                      <button
+                        className="ml-2 rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-700"
+                        onClick={() => handleDelete(user._id)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -125,6 +138,8 @@ function ManageUsers() {
           </table>
         )}
       </div>
+
+      {/* pagination */}
       <div className="mt-4 flex items-center justify-center gap-2">
         <button
           onClick={() => setCurrentPage(1)}
@@ -174,6 +189,11 @@ function ManageUsers() {
           Last
         </button>
       </div>
+
+      {/* modal */}
+      {isModalOpen && (
+        <ChangePasswordModal handleModal={handleModal} id={selectedId} />
+      )}
     </div>
   );
 }
