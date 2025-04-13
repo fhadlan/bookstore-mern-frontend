@@ -23,7 +23,7 @@ function ProfileAdmin() {
 
   const onSubmit = async (data) => {
     try {
-      await changePassword(data).unwrap();
+      await changePassword({ data, id: "" }).unwrap();
       await Swal.fire({
         icon: "success",
         title: "Password changed successfully",

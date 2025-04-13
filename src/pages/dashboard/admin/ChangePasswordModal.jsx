@@ -1,7 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { FaWindowClose } from "react-icons/fa";
+import { useChangePasswordAdminMutation } from "../../../redux/features/admin/adminApi";
+import Swal from "sweetalert2";
 
 function ChangePasswordModal({ handleModal, id }) {
+  const [changePassword] = useChangePasswordAdminMutation();
   const {
     register,
     handleSubmit,
@@ -11,17 +15,34 @@ function ChangePasswordModal({ handleModal, id }) {
 
   const newPassword = watch("newPassword");
 
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => {
+    try {
+      await changePassword({ data, id }).unwrap();
+      await Swal.fire({
+        icon: "success",
+        title: "Password changed successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      handleModal();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: error.data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
 
   return (
-    <div>
-      <div
-        className="fixed inset-0 z-20 bg-black/50"
-        onClick={() => handleModal(null)}
-      />
-
-      <div className="absolute top-1/2 left-1/2 z-30 mx-auto w-full max-w-md -translate-x-1/2 -translate-y-1/2 transform rounded bg-white p-6 shadow-lg">
-        <form className="flex w-xs flex-col" onSubmit={handleSubmit(onSubmit)}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="relative mx-auto w-full max-w-xs rounded bg-white p-6">
+        <FaWindowClose
+          onClick={handleModal}
+          className="absolute top-2 right-2 cursor-pointer text-2xl text-red-500"
+        />
+        <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           <h2 className="font-primary mb-6 text-3xl font-semibold">
             Change Password
           </h2>

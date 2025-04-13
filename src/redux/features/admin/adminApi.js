@@ -40,8 +40,8 @@ const adminApi = createApi({
       invalidatesTags: ["User"],
     }),
     changePasswordAdmin: builder.mutation({
-      query: (data) => ({
-        url: "/change-password-admin",
+      query: ({ data, id }) => ({
+        url: `/change-password-admin?id=${id}`,
         method: "PUT",
         body: data,
       }),

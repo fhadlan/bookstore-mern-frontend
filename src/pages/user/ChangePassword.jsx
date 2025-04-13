@@ -1,11 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { auth } from "../../firebase/firebase.config";
 import { useAuth } from "../../context/AuthContext";
-import { useChangePasswordMutation } from "../../redux/features/userCustomer/userApi";
 
 function ChangePassword() {
-  const [changePassword] = useChangePasswordMutation();
   const { changeUserPassword } = useAuth();
 
   const {
@@ -19,16 +16,8 @@ function ChangePassword() {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
+      // console.log(data);
       await changeUserPassword(data.currentPassword, data.newPassword);
-      // const user = auth.currentUser;
-      // const passwordData = {
-      //   uid: user.uid,
-      //   currentPassword: data.currentPassword,
-      //   newPassword: data.newPassword,
-      // };
-      // console.log(passwordData);
-      // await changePassword(passwordData);
     } catch (error) {
       console.log(error);
       alert("Something went wrong");
