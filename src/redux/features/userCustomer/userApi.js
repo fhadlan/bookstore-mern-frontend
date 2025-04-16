@@ -1,7 +1,6 @@
 import getBaseUrl from "../../../utils/getBaseUrl";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { auth } from "../../../firebase/firebase.config";
-import { updateProfile } from "firebase/auth";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${getBaseUrl()}/api/user`,

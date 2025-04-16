@@ -37,7 +37,7 @@ function EditProfile() {
         confirmButtonText: "Yes, update it!",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          updateProfile(formData);
+          await updateProfile(formData).unwrap();
           Swal.fire({
             icon: "success",
             title: "Profile updated successfully",

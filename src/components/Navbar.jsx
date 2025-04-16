@@ -41,10 +41,11 @@ const Navbar = () => {
       showDenyButton: true,
       confirmButtonText: "Yes",
       denyButtonText: "No",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        logoutUser();
+        await logoutUser();
         setIsDropdownOpen(false);
+        window.location.href = "/";
       }
     });
   };

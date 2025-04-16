@@ -18,6 +18,8 @@ function ChangePassword() {
     try {
       // console.log(data);
       await changeUserPassword(data.currentPassword, data.newPassword);
+      alert("Password changed successfully");
+      window.location.href = "/profile";
     } catch (error) {
       console.log(error);
       alert("Something went wrong");

@@ -18,7 +18,7 @@ const TopSellers = () => {
   const { data: books = [], isLoading } = useFetchAllBooksQuery();
 
   React.useEffect(() => {
-    if (books) {
+    if (!isLoading) {
       setCategories([
         "Choose a genre",
         ...new Set(books.map((book) => book.category)),

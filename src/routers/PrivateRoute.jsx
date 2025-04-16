@@ -9,7 +9,7 @@ function PrivateRoute() {
 
   useEffect(() => {
     if (!currentUser && !loading) {
-      navigate("/login");
+      window.location.href = "/login";
     }
   }, [currentUser, loading, navigate]);
 

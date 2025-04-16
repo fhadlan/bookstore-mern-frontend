@@ -4,6 +4,9 @@ import { Link } from "react-router";
 
 function Profile() {
   const user = useAuth().currentUser;
+
+  // console.log();
+
   return (
     <div className="mx-auto flex max-w-md flex-col items-center rounded p-4 shadow-2xl">
       <img
@@ -20,6 +23,15 @@ function Profile() {
       >
         Edit Profile
       </Link>
+
+      {user.providerData[0].providerId === "password" && (
+        <Link
+          to={"/change-password"}
+          className="mt-2 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+        >
+          Change Password
+        </Link>
+      )}
     </div>
   );
 }
