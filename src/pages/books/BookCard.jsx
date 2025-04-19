@@ -37,14 +37,28 @@ const BookCard = ({ book }) => {
               : book.description}
           </p>
           <p className="mb-5 font-medium">
-            ${book.newPrice}{" "}
-            <span className="ml-2 font-normal line-through">
-              ${book.oldPrice}
-            </span>
+            {book.discountedPrice.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}{" "}
+            {book.discountedPrice !== book.price && (
+              <span className="ml-2 font-normal line-through">
+                {book.price.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </span>
+            )}
+          </p>
+          <p
+            className={`mb-2 text-sm ${book.quantity > 0 ? "text-gray-500" : "text-red-600"}`}
+          >
+            {book.quantity > 0 ? `In Stock: ${book.quantity}` : "Out of Stock"}
           </p>
           <button
             onClick={() => handleAddToCart(book)}
-            className="bg-primary hover:bg-secondary flex items-center gap-1 space-x-1 rounded-md px-3 py-1 shadow-sm transition-all duration-200 hover:cursor-pointer hover:text-white"
+            className="bg-primary hover:bg-secondary flex items-center gap-1 space-x-1 rounded-md px-3 py-1 shadow-sm transition-all duration-200 hover:cursor-pointer hover:text-white disabled:cursor-not-allowed disabled:bg-gray-400 disabled:text-white"
+            disabled={book.quantity === 0}
           >
             <FaShoppingCart className="" />
             <span>Add to Cart</span>

@@ -84,7 +84,12 @@ const CartPage = () => {
                           <h3>
                             <Link to={`/book/${item._id}`}>{item.title}</Link>
                           </h3>
-                          <p className="sm:ml-4">${item.newPrice}</p>
+                          <p className="sm:ml-4">
+                            {item.discountedPrice.toLocaleString("en", {
+                              style: "currency",
+                              currency: "USD",
+                            })}
+                          </p>
                         </div>
                         <p className="mt-1 text-sm text-gray-500 capitalize">
                           <strong>Category:</strong> {item.category}
@@ -121,7 +126,14 @@ const CartPage = () => {
       <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
         <div className="flex justify-between text-base font-medium text-gray-900">
           <p>Subtotal</p>
-          <p>${cartItems.reduce((acc, item) => acc + item.newPrice, 0)}</p>
+          <p>
+            {cartItems
+              .reduce((acc, item) => acc + item.discountedPrice, 0)
+              .toLocaleString("en", {
+                style: "currency",
+                currency: "USD",
+              })}
+          </p>
         </div>
         <p className="mt-0.5 text-sm text-gray-500">
           Shipping and taxes calculated at checkout.

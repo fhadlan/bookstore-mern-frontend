@@ -5,7 +5,6 @@ import { useFetchSingleBookQuery } from "../../redux/features/book/bookApi";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cart/cartSlice";
 import { FaShoppingCart } from "react-icons/fa";
-import { getImgUrl } from "../../utils/getImgUrl";
 
 const SingleBook = () => {
   const { id } = useParams();
@@ -18,10 +17,11 @@ const SingleBook = () => {
     dispatch(addToCart(product));
   };
 
+  isLoading && <div>Loading...</div>;
+  isError && <div>Error</div>;
+
   return (
     <div>
-      {isLoading && <div>Loading...</div>}
-      {isError && <div>Error</div>}
       <div className="mx-auto mb-4 w-full max-w-5xl rounded bg-white px-8 pt-6 pb-8 shadow-md">
         <h3 className="font-primary mb-6 text-xl font-semibold">
           {book?.title}
@@ -43,7 +43,7 @@ const SingleBook = () => {
           </div>
           <div className="flex flex-col gap-3">
             <span>
-              <strong>Author:</strong> static author
+              <strong>Author:</strong> {book?.author}
             </span>
             <span>
               <strong>Category:</strong> {book?.category}
@@ -52,7 +52,19 @@ const SingleBook = () => {
               <strong>Description:</strong> {book?.description}
             </span>
             <span>
-              <strong>Price:</strong> {book?.newPrice}
+              <strong>Price:</strong>{" "}
+              {book?.discountedPrice.toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD",
+              })}{" "}
+              {book?.discountedPrice !== book?.price && (
+                <span className="line-through">
+                  {book?.price.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })}
+                </span>
+              )}
             </span>
           </div>
         </div>
