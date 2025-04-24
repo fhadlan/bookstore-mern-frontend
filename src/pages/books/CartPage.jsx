@@ -1,15 +1,27 @@
 import React from "react";
 import { Link } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getImgUrl } from "../../utils/getImgUrl";
 import { removeFromCart, clearCart } from "../../redux/features/cart/cartSlice";
 import Swal from "sweetalert2";
+import { useFetchCartBooksDetailsMutation } from "../../redux/features/book/bookApi";
 
 const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
-
+  const [itemsDetail, { data: items, isLoading }] =
+    useFetchCartBooksDetailsMutation();
   const dispatch = useDispatch();
 
+  React.useEffect(() => {
+    try {
+      itemsDetail(cartItems);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [cartItems]);
+
+  React.useEffect(() => {
+    console.log(items);
+  }, [items]);
   const handleRemoveItem = (item) => {
     Swal.fire({
       title: "Do you want to remove this item?",
@@ -44,6 +56,10 @@ const CartPage = () => {
     });
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="mt-12 flex h-full flex-col overflow-hidden bg-white shadow-xl">
       <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
@@ -52,7 +68,7 @@ const CartPage = () => {
             Shopping cart
           </div>
           <div className="ml-3 flex h-7 items-center">
-            {cartItems.length > 0 && (
+            {items?.length > 0 && (
               <button
                 type="button"
                 onClick={handleClearCart}
@@ -66,9 +82,9 @@ const CartPage = () => {
 
         <div className="mt-8">
           <div className="flow-root">
-            {cartItems.length > 0 ? (
+            {items?.length > 0 ? (
               <ul role="list" className="-my-6 divide-y divide-gray-200">
-                {cartItems.map((item, index) => (
+                {items.map((item, index) => (
                   <li className="flex py-6" key={index}>
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                       <img
@@ -84,20 +100,28 @@ const CartPage = () => {
                           <h3>
                             <Link to={`/book/${item._id}`}>{item.title}</Link>
                           </h3>
+
                           <p className="sm:ml-4">
-                            {item.discountedPrice.toLocaleString("en", {
+                            {item.total.toLocaleString("en", {
                               style: "currency",
                               currency: "USD",
                             })}
                           </p>
                         </div>
                         <p className="mt-1 text-sm text-gray-500 capitalize">
-                          <strong>Category:</strong> {item.category}
+                          <strong>Category: </strong> {item.category}
+                        </p>
+                        <p className="mt-1 text-sm text-gray-500 capitalize">
+                          <strong>Price: </strong>
+                          {item.price.toLocaleString("en", {
+                            style: "currency",
+                            currency: "USD",
+                          })}
                         </p>
                       </div>
-                      <div className="flex flex-1 flex-wrap items-end justify-between space-y-2 text-sm">
+                      <div className="mt-1 flex flex-1 flex-wrap items-end justify-between space-y-2 text-sm">
                         <p className="text-gray-500">
-                          <strong>Qty:</strong> 1
+                          <strong>Qty:</strong> {item.quantity}
                         </p>
 
                         <div className="flex">
@@ -127,8 +151,8 @@ const CartPage = () => {
         <div className="flex justify-between text-base font-medium text-gray-900">
           <p>Subtotal</p>
           <p>
-            {cartItems
-              .reduce((acc, item) => acc + item.discountedPrice, 0)
+            {items
+              ?.reduce((acc, item) => acc + item.total, 0)
               .toLocaleString("en", {
                 style: "currency",
                 currency: "USD",

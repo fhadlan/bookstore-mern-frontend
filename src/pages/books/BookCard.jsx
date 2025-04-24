@@ -6,6 +6,7 @@ import { addToCart } from "../../redux/features/cart/cartSlice";
 
 const BookCard = ({ book }) => {
   const dispatch = useDispatch();
+  const [quantity, setQuantity] = React.useState(1);
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
@@ -59,8 +60,22 @@ const BookCard = ({ book }) => {
                 ? `In Stock: ${book.quantity}`
                 : "Out of Stock"}
             </p>
+            <label className="px-2 py-1">
+              Quantity:
+              <select
+                className="ml-1 rounded-md px-2 py-1"
+                name="quantity"
+                onChange={(e) => setQuantity(e.target.value)}
+              >
+                {[...Array(book?.quantity).keys()].map((i) => (
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+            </label>
             <button
-              onClick={() => handleAddToCart(book)}
+              onClick={() => handleAddToCart({ _id: book._id, quantity })}
               className="bg-primary hover:bg-secondary ml-2 flex items-center justify-center gap-1 space-x-1 rounded-md px-3 py-1 shadow-sm transition-all duration-200 hover:cursor-pointer hover:text-white disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
               disabled={book.quantity === 0}
             >

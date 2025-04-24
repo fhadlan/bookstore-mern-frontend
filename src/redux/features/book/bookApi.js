@@ -54,6 +54,13 @@ const bookApi = createApi({
       query: ({ title, page }) => `/search?title=${title}&page=${page}`,
       providesTags: ["Book"],
     }),
+    fetchCartBooksDetails: builder.mutation({
+      query: (items = []) => ({
+        url: "/cart",
+        method: "POST",
+        body: items,
+      }),
+    }),
   }),
 });
 
@@ -66,6 +73,7 @@ export const {
   useFetchBookTableDataQuery,
   useFetchBannerImageQuery,
   useSearchBookQuery,
+  useFetchCartBooksDetailsMutation,
 } = bookApi;
 
 export default bookApi;
