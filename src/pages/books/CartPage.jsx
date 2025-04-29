@@ -4,11 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, clearCart } from "../../redux/features/cart/cartSlice";
 import Swal from "sweetalert2";
 import { useFetchCartBooksDetailsMutation } from "../../redux/features/book/bookApi";
+import AdjustQuantityModal from "./AdjustQuantityModal";
 
 const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [itemsDetail, { data: items, isLoading }] =
     useFetchCartBooksDetailsMutation();
+  const [isCheckoutDisabled, setIsCheckoutDisabled] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState({
+    isOpen: false,
+    itemIndex: null,
+  });
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -20,7 +26,11 @@ const CartPage = () => {
   }, [cartItems]);
 
   React.useEffect(() => {
-    console.log(items);
+    items?.forEach((item) => {
+      if (!item.isAvailable) {
+        setIsCheckoutDisabled(true);
+      }
+    });
   }, [items]);
   const handleRemoveItem = (item) => {
     Swal.fire({
@@ -120,11 +130,34 @@ const CartPage = () => {
                         </p>
                       </div>
                       <div className="mt-1 flex flex-1 flex-wrap items-end justify-between space-y-2 text-sm">
-                        <p className="text-gray-500">
-                          <strong>Qty:</strong> {item.quantity}
-                        </p>
+                        <div className="flex gap-2 text-sm">
+                          <p className="flex flex-nowrap gap-1 text-gray-500">
+                            <strong>Qty:</strong>
+                            {item.quantity}
+                          </p>
+                          {!item.isAvailable && (
+                            <p className="text-sm text-red-600">
+                              Only {item.stock} copies available. Please adjust
+                              the order quantity or remove the item.
+                            </p>
+                          )}
+                        </div>
 
-                        <div className="flex">
+                        <div className="flex gap-2">
+                          {!item.isAvailable && (
+                            <button
+                              type="button"
+                              className="font-medium text-indigo-600 hover:cursor-pointer hover:text-indigo-500"
+                              onClick={() =>
+                                setIsModalOpen({
+                                  isOpen: true,
+                                  itemIndex: index,
+                                })
+                              }
+                            >
+                              Adjust
+                            </button>
+                          )}
                           <button
                             type="button"
                             className="font-medium text-indigo-600 hover:cursor-pointer hover:text-indigo-500"
@@ -163,11 +196,13 @@ const CartPage = () => {
           Shipping and taxes calculated at checkout.
         </p>
         <div className="mt-6">
-          <Link
-            to="/checkout"
-            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-          >
-            Checkout
+          <Link to="/checkout">
+            <button
+              className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-500"
+              disabled={isCheckoutDisabled}
+            >
+              Checkout
+            </button>
           </Link>
         </div>
         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
@@ -183,6 +218,14 @@ const CartPage = () => {
           </Link>
         </div>
       </div>
+      {isModalOpen.isOpen && (
+        <AdjustQuantityModal
+          _id={items[isModalOpen.itemIndex]._id}
+          stock={items[isModalOpen.itemIndex].stock}
+          closeModal={() => setIsModalOpen({ isOpen: false })}
+          dispatch={dispatch}
+        />
+      )}
     </div>
   );
 };
