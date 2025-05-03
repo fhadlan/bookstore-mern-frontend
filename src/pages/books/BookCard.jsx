@@ -26,13 +26,13 @@ const BookCard = ({ book }) => {
         </div>
 
         <div className="flex h-full flex-col">
-          <div className="flex flex-grow flex-col">
+          <div className="flex w-45 flex-grow flex-col">
             <Link to={`/book/${book._id}`}>
-              <h3 className="font-primary mb-3 text-lg font-semibold hover:text-blue-600">
+              <h3 className="font-primary text-md mb-3 line-clamp-2 font-semibold hover:text-blue-600">
                 {book.title}
               </h3>
             </Link>
-            <p className="font-secondary mb-5 text-sm text-gray-600">
+            <p className="font-secondary mb-5 line-clamp-3 text-sm text-gray-600">
               {book.description.length > 80
                 ? `${book.description.slice(0, 80)}...`
                 : book.description}

@@ -19,18 +19,34 @@ function DetailOrder({ order }) {
             <tr className="bg-gray-200">
               <th className="px-4 py-2">Book Title</th>
               <th className="px-4 py-2">Price</th>
+              <th className="px-4 py-2">Quantity</th>
+              <th className="px-4 py-2">Total</th>
             </tr>
           </thead>
           <tbody>
-            {order.productsId.map((product) => (
-              <tr key={product._id} className="border-b">
-                <td className="px-4 py-2">{product.title}</td>
-                <td className="px-4 py-2">${product.newPrice}</td>
+            {order.items.map((item) => (
+              <tr key={item._id} className="border-b">
+                <td className="px-4 py-2">{item.productId.title}</td>
+                <td className="px-4 py-2">
+                  {item.priceAtOrder.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })}
+                </td>
+                <td className="px-4 py-2">{item.quantity}</td>
+                <td className="px-4 py-2">
+                  {item.total.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })}
+                </td>
               </tr>
             ))}
             <tr className="border-t-2 font-bold">
               <td className="px-4 py-2">Total Price</td>
-              <td className="px-4 py-2">${order.totalPrice}</td>
+              <td className="px-4 py-2 text-right" colSpan={3}>
+                ${order.finalAmount}
+              </td>
             </tr>
           </tbody>
         </table>

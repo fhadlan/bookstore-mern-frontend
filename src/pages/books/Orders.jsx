@@ -88,12 +88,14 @@ function Orders() {
                 })}
               </td>
               <td className="border border-slate-300 px-4 py-2">
-                {order.productsId.map((item) => (
-                  <div key={item._id}>{item.title}(x1)</div>
+                {order.items.map((item) => (
+                  <div key={item._id}>
+                    {item.productId.title}(x{item.quantity})
+                  </div>
                 ))}
               </td>
               <td className="border border-slate-300 px-4 py-2">
-                ${order.totalPrice}
+                ${order.finalAmount}
               </td>
               <td className="border border-slate-300 px-4 py-2">
                 <StatusBadge status={order.status} />

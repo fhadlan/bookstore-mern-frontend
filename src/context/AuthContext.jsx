@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -11,43 +11,40 @@ import {
   updatePassword,
   getAuth,
 } from "firebase/auth";
-import { createContext, useContext } from "react";
 import { auth } from "../firebase/firebase.config";
 
-const AuthContext = createContext();
-const googleProvider = new GoogleAuthProvider();
+const AuthContext = React.createContext();
 
 //auth context
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
 
 //auth provider
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  //register user
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
   const registerUser = async (email, password) => {
     return await createUserWithEmailAndPassword(auth, email, password);
   };
 
-  //login user
   const loginUser = async (email, password) => {
     return await signInWithEmailAndPassword(auth, email, password);
   };
 
-  //sign in with google
   const signInWithGoogle = async () => {
-    return await signInWithPopup(auth, googleProvider);
+    return await signInWithPopup(auth, new GoogleAuthProvider());
   };
 
-  //log out
-  const logoutUser = () => {
-    return signOut(auth);
-  };
+  const logoutUser = () => signOut(auth);
 
-  //changeUserPassword
   const changeUserPassword = async (currentPassword, newPassword) => {
     const user = auth.currentUser;
     const credential = EmailAuthProvider.credential(
@@ -57,15 +54,6 @@ export const AuthProvider = ({ children }) => {
     await reauthenticateWithCredential(user, credential);
     await updatePassword(user, newPassword);
   };
-
-  //manage user
-  React.useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setLoading(false);
-    });
-    return unsubscribe;
-  });
 
   const value = {
     currentUser,

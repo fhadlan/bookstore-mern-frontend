@@ -35,8 +35,7 @@ const Checkout = () => {
         zipcode: data.zipcode,
       },
       phone: data.phone,
-      productsId: cartItems.map((item) => item._id),
-      totalPrice: cartItems.reduce((acc, item) => acc + item.newPrice, 0),
+      cartItems: cartItems,
     };
 
     try {
